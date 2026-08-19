@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Closed Cases" icon-name="standard:case">
+        <!-- Arr, this be the main treasure chest for displayin' closed cases -->
+        <template if:true={cases.data}>
+            <template if:true={hasCases}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={cases.data}
+                    columns={columns}
+                    hide-checkbox-column
+                    show-row-number-column>
+                </lightning-datatable>
+            </template>
+            <!-- Blimey! No cases found, show a friendly message -->
+            <template if:false={hasCases}>
+                <div class="slds-text-align_center slds-p-around_medium">
+                    <p>No closed cases found for this account, matey! ⚓</p>
+                </div>
+            </template>
+        </template>
+        
+        <!-- If the seas be rough and an error occurs, show this warning -->
+        <template if:true={cases.error}>
+            <div class="slds-text-color_error slds-p-around_medium">
+                <p>Shiver me timbers! Error loading cases: {cases.error}</p>
+            </div>
+        </template>
+    </lightning-card>
+</template>
