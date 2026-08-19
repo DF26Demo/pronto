@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="Closed Cases (Last 2 Years)" icon-name="standard:case">
+        <template if:true={hasCases}>
+            <!-- Arr! Display the treasure trove of closed cases -->
+            <lightning-datatable
+                key-field="Id"
+                data={cases}
+                columns={columns}
+                sort-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={handleSort}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </template>
+        
+        <template if:false={hasCases}>
+            <template if:false={error}>
+                <!-- No cases found - smooth sailing! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No closed cases found in the last 2 years.</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit an iceberg -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading cases: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
