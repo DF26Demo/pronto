@@ -1,0 +1,38 @@
+<template>
+    <lightning-card title="Closed Cases (Last 2 Years)" icon-name="standard:case">
+        <div slot="actions">
+            <lightning-button 
+                label="Refresh" 
+                icon-name="utility:refresh" 
+                onclick={handleRefresh}>
+            </lightning-button>
+        </div>
+        
+        <div class="slds-p-around_medium">
+            <template if:true={hasCases}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={cases}
+                    columns={columns}
+                    hide-checkbox-column>
+                </lightning-datatable>
+            </template>
+            
+            <template if:true={error}>
+                <div class="slds-text-color_error">
+                    <lightning-icon icon-name="utility:error" alternative-text="Error" size="small"></lightning-icon>
+                    {error.body.message}
+                </div>
+            </template>
+            
+            <template if:false={hasCases}>
+                <template if:false={error}>
+                    <div class="slds-text-align_center slds-p-vertical_large">
+                        <lightning-icon icon-name="utility:info" alternative-text="Info" size="small"></lightning-icon>
+                        <p class="slds-m-top_small">{noCasesMessage}</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
