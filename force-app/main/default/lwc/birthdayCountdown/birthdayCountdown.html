@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={hasBirthdate}>
+                <div class="slds-text-align_center">
+                    <div class="countdown-number slds-text-heading_large slds-text-color_brand">
+                        {daysUntilBirthday}
+                    </div>
+                    <div class="slds-text-body_regular slds-m-top_x-small">
+                        {countdownMessage}
+                    </div>
+                    <div class="slds-text-body_small slds-text-color_weak slds-m-top_small">
+                        Birthday: {formattedBirthdate}
+                    </div>
+                </div>
+            </template>
+            <template if:false={hasBirthdate}>
+                <div class="slds-text-align_center slds-text-color_weak">
+                    No birthdate set for this contact
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
