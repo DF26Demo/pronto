@@ -1,0 +1,37 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-var-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            
+            <template if:true={hasBirthdate}>
+                <div class="slds-text-align_center">
+                    <div class="slds-text-heading_large slds-var-m-bottom_small">
+                        {daysUntilBirthday}
+                    </div>
+                    <div class="slds-text-body_regular slds-var-m-bottom_small">
+                        {birthdayMessage}
+                    </div>
+                    <div class="slds-text-color_weak slds-text-body_small">
+                        Birthdate: {birthdate}
+                    </div>
+                </div>
+            </template>
+            
+            <template if:false={hasBirthdate}>
+                <template if:false={isLoading}>
+                    <div class="slds-text-align_center slds-text-color_weak">
+                        🏴‍☠️ No birthdate on record for this contact, matey!
+                    </div>
+                </template>
+            </template>
+            
+            <template if:true={error}>
+                <div class="slds-text-color_error">
+                    Blimey! An error occurred: {error.body.message}
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
