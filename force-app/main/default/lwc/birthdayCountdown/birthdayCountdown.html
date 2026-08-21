@@ -1,0 +1,41 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={hasBirthdate}>
+                <template if:true={isBirthdayToday}>
+                    <!-- Arr, it be the special day! -->
+                    <div class="slds-text-heading_large slds-text-align_center slds-m-bottom_small">
+                        🎉 🎂 🎉
+                    </div>
+                    <div class="slds-text-heading_medium slds-text-align_center slds-text-color_success">
+                        Happy Birthday, {contactName}!
+                    </div>
+                    <div class="slds-text-body_regular slds-text-align_center slds-m-top_small">
+                        Fair winds and following seas on yer special day!
+                    </div>
+                </template>
+                <template if:false={isBirthdayToday}>
+                    <!-- Blimey! The countdown be on -->
+                    <div class="slds-text-heading_large slds-text-align_center slds-m-bottom_small">
+                        {daysUntilBirthday}
+                    </div>
+                    <div class="slds-text-body_regular slds-text-align_center">
+                        {countdownText}
+                    </div>
+                    <div class="slds-text-body_small slds-text-align_center slds-m-top_small slds-text-color_weak">
+                        Next birthday: {nextBirthdayFormatted}
+                    </div>
+                </template>
+            </template>
+            <template if:false={hasBirthdate}>
+                <!-- Shiver me timbers, no birthdate be set! -->
+                <div class="slds-text-body_regular slds-text-align_center slds-text-color_weak">
+                    No birthdate on record for this contact.
+                </div>
+                <div class="slds-text-body_small slds-text-align_center slds-m-top_small">
+                    Add a birthdate to see the countdown!
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
