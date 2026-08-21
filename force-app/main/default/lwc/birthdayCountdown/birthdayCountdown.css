@@ -1,0 +1,25 @@
+/* Arr, a bit of style to make this component shipshape! */
+
+.birthday-today {
+    animation: celebrate 1s ease-in-out infinite alternate;
+}
+
+/* A wee bit of animation for the birthday celebration */
+@keyframes celebrate {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
+.countdown-display {
+    padding: 1rem;
+}
+
+.countdown-display p:first-child {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #0176d3;
+}
