@@ -1,0 +1,23 @@
+/* Arr! Style our countdown like a proper treasure */
+
+.countdown-text {
+    padding: 1rem;
+}
+
+.celebration-text {
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    color: white;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Make the celebration text pulse like a beacon on the high seas */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
