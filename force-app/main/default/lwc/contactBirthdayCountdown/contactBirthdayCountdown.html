@@ -1,0 +1,43 @@
+<template>
+    <lightning-card 
+        title="Birthday Countdown" 
+        icon-name="standard:event"
+        variant={cardVariant}
+    >
+        <template if:true={hasBirthdate}>
+            <div class="slds-p-around_medium">
+                <!-- Arr! Show the countdown in bold letters -->
+                <div class={showCelebration ? 'celebration-text' : 'countdown-text'}>
+                    <p class="slds-text-heading_large slds-text-align_center">
+                        {birthdayMessage}
+                    </p>
+                </div>
+                
+                <!-- Show the actual birthdate for reference, like coordinates on a map -->
+                <div class="slds-m-top_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">
+                        Birthdate: <lightning-formatted-date value={birthdate} format="MMMM d"></lightning-formatted-date>
+                    </p>
+                </div>
+            </div>
+        </template>
+        
+        <template if:false={hasBirthdate}>
+            <template if:false={error}>
+                <!-- No birthdate found - the treasure map be empty! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No birthdate set for this contact.</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit a squall -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error slds-text-align_center">
+                    Error loading birthday information
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
