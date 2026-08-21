@@ -1,0 +1,59 @@
+<template>
+    <!-- Arr, here be the treasure map (template) for displayin' the birthday countdown -->
+    <lightning-card title="🎂 Birthday Countdown" icon-name="custom:custom63">
+        <div class="slds-p-around_medium">
+            
+            <!-- Loadin' spinner while we sail to fetch the data -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <!-- Blimey! No birthdate on record -->
+            <template if:true={noBirthdate}>
+                <div class="slds-text-align_center slds-text-color_weak">
+                    <p>No birthdate found for this contact.</p>
+                    <p class="slds-m-top_small">Add a birthdate to see the countdown!</p>
+                </div>
+            </template>
+
+            <!-- Show the countdown if we have a birthdate -->
+            <template if:true={birthdate}>
+                <div class="slds-text-align_center">
+                    
+                    <!-- Special celebration for today's birthday! -->
+                    <template if:true={isBirthdayToday}>
+                        <div class="birthday-today">
+                            <p class="slds-text-heading_large slds-text-color_success">
+                                🎉 BIRTHDAY TODAY! 🎉
+                            </p>
+                            <p class="slds-m-top_small">Time to celebrate, ye scallywag!</p>
+                        </div>
+                    </template>
+
+                    <!-- Regular countdown display -->
+                    <template if:false={isBirthdayToday}>
+                        <div class="countdown-display">
+                            <p class="slds-text-heading_large slds-text-color_default">
+                                {daysUntilBirthday}
+                            </p>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                {displayMessage}
+                            </p>
+                        </div>
+                    </template>
+
+                    <!-- Show the actual birthdate -->
+                    <div class="slds-m-top_medium slds-text-body_small slds-text-color_weak">
+                        <lightning-formatted-date-time 
+                            value={birthdate} 
+                            year="numeric" 
+                            month="long" 
+                            day="2-digit">
+                        </lightning-formatted-date-time>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>
