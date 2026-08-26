@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title="Case Timeline" icon-name="standard:timeline">
+        <div class="slds-p-horizontal_small">
+            <!-- Arr, if we be havin' no data, show a friendly message -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <lightning-spinner alternative-text="Loading timeline..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Blimey! Here be the timeline events, displayed like ships in formation -->
+            <template if:false={isLoading}>
+                <template if:true={hasTimelineItems}>
+                    <div class="timeline-container">
+                        <template for:each={timelineItems} for:item="item">
+                            <div key={item.id} class="timeline-item">
+                                <!-- Icon be the flag on the mast -->
+                                <div class={item.iconContainerClass}>
+                                    <lightning-icon 
+                                        icon-name={item.iconName} 
+                                        size="small" 
+                                        alternative-text={item.title}
+                                        class="timeline-icon">
+                                    </lightning-icon>
+                                </div>
+                                
+                                <!-- Here be the treasure: content of each event -->
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <h3 class="slds-text-heading_small slds-m-bottom_xx-small">{item.title}</h3>
+                                        <p class="slds-text-body_small slds-text-color_weak">{item.dateFormatted}</p>
+                                    </div>
+                                    <template if:true={item.description}>
+                                        <p class="slds-text-body_regular slds-m-top_xx-small">{item.description}</p>
+                                    </template>
+                                    <template if:true={item.user}>
+                                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">
+                                            By: {item.user}
+                                        </p>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- If the seas be empty, show this message -->
+                <template if:false={hasTimelineItems}>
+                    <div class="slds-align_absolute-center slds-p-vertical_large">
+                        <p class="slds-text-body_regular slds-text-color_weak">No timeline events to display.</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
