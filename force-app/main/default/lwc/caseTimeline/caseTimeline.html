@@ -1,0 +1,58 @@
+<template>
+    <lightning-card title="Case Timeline" icon-name="standard:timeline">
+        <!-- Arr, this be the main timeline container -->
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading timeline..." size="small"></lightning-spinner>
+            </template>
+            
+            <template if:true={hasTimelineItems}>
+                <!-- Blimey! Here be the timeline sailing through each event -->
+                <div class="slds-timeline">
+                    <template for:each={timelineItems} for:item="item">
+                        <div key={item.id} class="slds-timeline__item">
+                            <span class="slds-assistive-text">{item.type}</span>
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <div class={item.iconContainerClass}>
+                                        <lightning-icon 
+                                            icon-name={item.iconName} 
+                                            alternative-text={item.type}
+                                            size="small"
+                                            class="slds-icon_small">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+                                <div class="slds-media__body">
+                                    <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+                                        <div class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75">
+                                            <h3 class="slds-truncate" title={item.title}>
+                                                <strong>{item.title}</strong>
+                                            </h3>
+                                        </div>
+                                        <div class="slds-timeline__actions slds-timeline__actions_inline">
+                                            <p class="slds-timeline__date">{item.formattedDate}</p>
+                                        </div>
+                                    </div>
+                                    <p class="slds-m-top_x-small">{item.description}</p>
+                                    <template if:true={item.details}>
+                                        <div class="slds-box slds-box_x-small slds-theme_shade slds-m-top_x-small">
+                                            <p class="slds-text-body_small">{item.details}</p>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            
+            <template if:true={noTimelineItems}>
+                <!-- If this value be null, we abandon ship early -->
+                <div class="slds-text-align_center slds-p-around_large">
+                    <p class="slds-text-color_weak">No timeline events found for this case. The seas be calm! 🌊</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
