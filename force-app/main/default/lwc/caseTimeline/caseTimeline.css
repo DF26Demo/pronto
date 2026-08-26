@@ -1,0 +1,125 @@
+/* Arr, here be the styles to make this timeline shine like a freshly polished cutlass */
+
+.timeline-container {
+    position: relative;
+    padding-left: 2rem;
+}
+
+/* The vertical line connecting all events - like a rope binding the ship together */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 1.125rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #e5e5e5;
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.3s ease-in;
+}
+
+/* Blimey! Animate items as they appear */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Icon container - the flag pole, if ye will */
+.timeline-icon-container {
+    position: absolute;
+    left: -2rem;
+    top: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 3px solid #e5e5e5;
+    z-index: 1;
+}
+
+/* Different colors for different event types - every flag has its colors */
+.icon-created {
+    border-color: #3296ed;
+    background-color: #d8edff;
+}
+
+.icon-status_change {
+    border-color: #9050e9;
+    background-color: #ede5ff;
+}
+
+.icon-comment {
+    border-color: #06a59a;
+    background-color: #d1f5f2;
+}
+
+.icon-closed {
+    border-color: #04844b;
+    background-color: #d1f5e0;
+}
+
+.icon-escalated {
+    border-color: #fe9339;
+    background-color: #fff5e8;
+}
+
+.icon-assigned {
+    border-color: #0b827c;
+    background-color: #d1f5f2;
+}
+
+.icon-default {
+    border-color: #706e6b;
+    background-color: #f3f3f3;
+}
+
+.timeline-icon {
+    fill: currentColor;
+}
+
+/* Content area - where the treasure details live */
+.timeline-content {
+    flex: 1;
+    background-color: #fafaf9;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-left: 1rem;
+    transition: all 0.2s ease;
+}
+
+/* Make it pop when hoverin', like findin' a gold doubloon */
+.timeline-content:hover {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateX(2px);
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Make sure it looks good on smaller screens - even on a dingy! */
+@media (max-width: 768px) {
+    .timeline-header {
+        flex-direction: column;
+    }
+}
