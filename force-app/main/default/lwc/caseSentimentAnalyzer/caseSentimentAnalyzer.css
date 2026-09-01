@@ -1,0 +1,51 @@
+.sentiment-container {
+    text-align: center;
+}
+
+.sentiment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* Arr, green for happy customers! */
+.sentiment-positive {
+    background-color: #d4f4dd;
+    color: #1d6f42;
+    border: 2px solid #4bca81;
+}
+
+/* Yellow for neutral waters */
+.sentiment-neutral {
+    background-color: #fef6e6;
+    color: #8a6d1b;
+    border: 2px solid #ffbf00;
+}
+
+/* Red for stormy seas! Walk carefully, matey! */
+.sentiment-negative {
+    background-color: #feded8;
+    color: #ba0517;
+    border: 2px solid #ea001e;
+}
+
+.sentiment-emoji {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.sentiment-label {
+    font-size: 1.125rem;
+}
+
+.sentiment-score {
+    margin-top: 1rem;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
