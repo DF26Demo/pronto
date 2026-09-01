@@ -1,0 +1,47 @@
+<template>
+    <!-- Arr! This be the main treasure chest displayin' customer sentiment -->
+    <lightning-card title="Customer Sentiment" icon-name="custom:custom85">
+        <div class="slds-p-around_medium">
+            <!-- Show loading spinner while we analyze the seven seas of comments -->
+            <template if:true={loading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Analyzing sentiment..." size="small"></lightning-spinner>
+                    <p class="slds-m-top_small">Analyzin' the customer's mood, matey...</p>
+                </div>
+            </template>
+
+            <!-- Here be the sentiment display when we've got our bearings -->
+            <template if:true={hasData}>
+                <div class="sentiment-container">
+                    <div class="slds-text-align_center slds-m-bottom_medium">
+                        <div class="sentiment-emoji" class={sentimentColor}>
+                            {sentimentEmoji}
+                        </div>
+                        <div class="slds-text-heading_large slds-m-top_small" class={sentimentColor}>
+                            {sentimentLabel}
+                        </div>
+                        <div class="slds-text-body_small slds-m-top_x-small slds-text-color_weak">
+                            Confidence: {scorePercentage}%
+                        </div>
+                    </div>
+                    
+                    <div class="slds-box slds-box_x-small slds-theme_shade slds-m-top_medium">
+                        <p class="slds-text-body_regular">{sentimentDescription}</p>
+                    </div>
+                </div>
+            </template>
+
+            <!-- If no comments exist, show a friendly message -->
+            <template if:false={hasData}>
+                <template if:false={loading}>
+                    <div class="slds-text-align_center slds-p-around_large">
+                        <p class="slds-text-body_regular slds-text-color_weak">
+                            No comments yet to analyze. Once customers leave comments,
+                            we'll chart the sentiment course!
+                        </p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
