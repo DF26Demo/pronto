@@ -1,0 +1,19 @@
+.sentiment-container {
+    /* Arr! Style the sentiment display to be as handsome as a pirate ship */
+}
+
+.sentiment-emoji {
+    font-size: 4rem;
+    line-height: 1;
+    /* Make them emojis big enough to see from the crow's nest! */
+}
+
+.slds-text-color_success {
+    color: #2e844a;
+    /* Green as the emerald seas for happy customers */
+}
+
+.slds-text-color_error {
+    color: #c23934;
+    /* Red as a warning flag for troubled waters */
+}
