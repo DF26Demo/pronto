@@ -1,0 +1,55 @@
+<template>
+    <lightning-card title="Customer Sentiment" icon-name="custom:custom63">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Analyzing sentiment..." size="small"></lightning-spinner>
+            </template>
+            
+            <template if:false={isLoading}>
+                <template if:true={sentimentData}>
+                    <!-- Arr, here be the sentiment gauge! -->
+                    <div class="sentiment-container">
+                        <div class={sentimentClass}>
+                            <span class="sentiment-emoji">{sentimentEmoji}</span>
+                            <span class="sentiment-label">{sentimentLabel}</span>
+                        </div>
+                        
+                        <div class="sentiment-score">
+                            <lightning-progress-bar value={sentimentScore} variant={progressVariant}></lightning-progress-bar>
+                            <p class="slds-text-body_small slds-m-top_small">{sentimentScore}% {sentimentLabel}</p>
+                        </div>
+                        
+                        <!-- Blimey! Show the summary if we got one -->
+                        <template if:true={sentimentSummary}>
+                            <div class="slds-box slds-m-top_small slds-theme_shade">
+                                <p class="slds-text-body_small">
+                                    <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                    {sentimentSummary}
+                                </p>
+                            </div>
+                        </template>
+                        
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_small">
+                            Based on {commentCount} comment(s)
+                        </p>
+                    </div>
+                </template>
+                
+                <template if:false={sentimentData}>
+                    <template if:true={error}>
+                        <!-- Walk the plank if there be errors! -->
+                        <div class="slds-text-color_error">
+                            <lightning-icon icon-name="utility:error" size="small" variant="error"></lightning-icon>
+                            <p class="slds-m-top_small">{error}</p>
+                        </div>
+                    </template>
+                    <template if:false={error}>
+                        <p class="slds-text-align_center slds-text-color_weak">
+                            No comments found to analyze, matey.
+                        </p>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
