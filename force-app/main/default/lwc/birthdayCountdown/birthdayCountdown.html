@@ -1,0 +1,39 @@
+<template>
+    <!-- Arr, display the birthday countdown like a treasure map! -->
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            
+            <template if:true={hasCountdown}>
+                <div class="slds-text-align_center">
+                    <div class="slds-text-heading_large slds-m-bottom_small">
+                        {countdownMessage}
+                    </div>
+                    <template if:true={isBirthdayToday}>
+                        <div class="slds-text-body_regular slds-text-color_success">
+                            🎂 Celebrate today!
+                        </div>
+                    </template>
+                </div>
+            </template>
+            
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error">
+                    {errorMessage}
+                </div>
+            </template>
+            
+            <template if:false={hasCountdown}>
+                <template if:false={isLoading}>
+                    <template if:false={errorMessage}>
+                        <div class="slds-text-align_center slds-text-color_weak">
+                            No birthdate set for this contact, ye landlubber!
+                        </div>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
