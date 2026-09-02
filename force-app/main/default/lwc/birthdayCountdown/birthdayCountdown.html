@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            
+            <template if:true={hasError}>
+                <!-- Blimey! Something went wrong on the high seas -->
+                <div class="slds-text-color_error">
+                    <p>{errorMessage}</p>
+                </div>
+            </template>
+            
+            <template if:true={showCountdown}>
+                <div class="slds-text-align_center">
+                    <!-- Arr, here be the countdown treasure! -->
+                    <div class="birthday-number">
+                        <span class="slds-text-heading_large">{daysUntilBirthday}</span>
+                    </div>
+                    <div class="slds-text-body_regular slds-m-top_small">
+                        <template if:true={isBirthdayToday}>
+                            🎉 <strong>Shiver me timbers! It be their birthday today!</strong> 🎉
+                        </template>
+                        <template if:false={isBirthdayToday}>
+                            {countdownMessage}
+                        </template>
+                    </div>
+                    <div class="slds-text-body_small slds-text-color_weak slds-m-top_small">
+                        Birthday: {formattedBirthdate}
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

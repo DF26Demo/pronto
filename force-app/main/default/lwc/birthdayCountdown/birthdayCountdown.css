@@ -1,0 +1,11 @@
+.birthday-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #0176d3;
+    margin: 1rem 0;
+}
+
+/* Arr, make it look shipshape! */
+.slds-card {
+    border-radius: 0.25rem;
+}
