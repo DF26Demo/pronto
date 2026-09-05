@@ -1,0 +1,106 @@
+/* Arr! Timeline styling to make it look like a proper ship's log */
+
+.timeline-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+/* This be the vertical line connecting all timeline events */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #dddbda;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 48px;
+    padding-bottom: 24px;
+    min-height: 60px;
+}
+
+/* The marker be the dot on the timeline - like a pin on a treasure map! */
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 3px solid #0176d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.timeline-content {
+    background-color: #f3f2f2;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover effect - make it interactive like a lively ship! */
+.timeline-content:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.timeline-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #181818;
+    margin: 0;
+    flex: 1;
+}
+
+.timeline-date {
+    font-size: 12px;
+    color: #706e6b;
+    white-space: nowrap;
+    margin-left: 12px;
+}
+
+.timeline-description {
+    font-size: 13px;
+    color: #3e3e3c;
+    margin: 4px 0;
+}
+
+.timeline-user {
+    font-size: 12px;
+    color: #706e6b;
+    font-style: italic;
+    margin: 4px 0 0 0;
+}
+
+/* Last item shouldn't have a line extending below it */
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item:last-child::after {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 36px;
+    bottom: 0;
+    width: 2px;
+    background-color: #ffffff;
+}

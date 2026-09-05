@@ -1,0 +1,69 @@
+<template>
+    <lightning-card title="Case Timeline" icon-name="standard:timeline">
+        <!-- Arr! Add a refresh button in the card actions -->
+        <lightning-button-icon 
+            slot="actions" 
+            icon-name="utility:refresh" 
+            alternative-text="Refresh" 
+            onclick={handleRefresh}
+            variant="border-filled">
+        </lightning-button-icon>
+
+        <template if:true={hasTimelineItems}>
+            <!-- Shiver me timbers! Display the timeline of events -->
+            <div class="slds-p-around_small">
+                <ul class="timeline-container">
+                    <template for:each={timelineItems} for:item="item">
+                        <li key={item.id} class="timeline-item">
+                            <div class="timeline-marker">
+                                <lightning-icon 
+                                    icon-name={item.icon} 
+                                    size="x-small" 
+                                    alternative-text={item.type}>
+                                </lightning-icon>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h3 class="timeline-title">{item.title}</h3>
+                                    <span class="timeline-date">{item.dateTime}</span>
+                                </div>
+                                <p class="timeline-description">{item.description}</p>
+                                <p class="timeline-user">By: {item.user}</p>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+        
+        <template if:false={hasTimelineItems}>
+            <template if:false={error}>
+                <!-- No timeline items found - smooth sailing ahead! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <lightning-icon 
+                        icon-name="utility:clock" 
+                        size="large" 
+                        alternative-text="No activity">
+                    </lightning-icon>
+                    <p class="slds-text-color_weak slds-p-top_small">
+                        No timeline activity found yet. The voyage has just begun!
+                    </p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit stormy seas -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    <lightning-icon 
+                        icon-name="utility:error" 
+                        size="small" 
+                        variant="error">
+                    </lightning-icon>
+                    Error loading timeline: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
