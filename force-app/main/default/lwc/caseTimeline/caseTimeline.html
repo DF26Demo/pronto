@@ -1,0 +1,79 @@
+<template>
+    <lightning-card title="Case Timeline" icon-name="standard:timesheet">
+        <!-- Arr! Show loading spinner while fetching the treasure -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_medium slds-text-align_center">
+                <lightning-spinner alternative-text="Loading timeline..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Display the timeline when we've got events to show -->
+        <template if:true={hasTimelineItems}>
+            <div class="slds-p-around_small">
+                <!-- Blimey! Here be the chronological log of events -->
+                <template for:each={timelineItems} for:item="item">
+                    <div key={item.id} class="slds-timeline__item_expandable slds-m-bottom_small">
+                        <span class="slds-assistive-text">Timeline item</span>
+                        <div class="slds-media slds-timeline__media">
+                            <div class="slds-media__figure">
+                                <lightning-icon 
+                                    icon-name={item.iconName} 
+                                    alternative-text={item.eventType}
+                                    size="small"
+                                ></lightning-icon>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                        <h3 class="slds-truncate" title={item.title}>
+                                            <strong>{item.title}</strong>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <p class="slds-m-top_xx-small slds-text-color_weak">
+                                    <lightning-formatted-date-time 
+                                        value={item.eventDate}
+                                        year="numeric"
+                                        month="short"
+                                        day="2-digit"
+                                        hour="2-digit"
+                                        minute="2-digit"
+                                    ></lightning-formatted-date-time>
+                                    <template if:true={item.createdBy}>
+                                        • by {item.createdBy}
+                                    </template>
+                                </p>
+                                <template if:true={item.description}>
+                                    <div class="slds-box slds-box_x-small slds-m-top_x-small slds-theme_shade">
+                                        <p class="slds-text-body_regular">{item.description}</p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- No timeline items found - smooth sailing with no events -->
+        <template if:false={hasTimelineItems}>
+            <template if:false={error}>
+                <template if:false={isLoading}>
+                    <div class="slds-p-around_medium slds-text-align_center">
+                        <p class="slds-text-color_weak">{noItemsMessage}</p>
+                    </div>
+                </template>
+            </template>
+        </template>
+
+        <!-- Blimey! We've hit troubled waters (error state) -->
+        <template if:true={error}>
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    <lightning-icon icon-name="utility:error" size="small" variant="error"></lightning-icon>
+                    Error loading timeline: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
