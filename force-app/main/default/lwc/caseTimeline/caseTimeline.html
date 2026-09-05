@@ -1,0 +1,59 @@
+<!-- Arr, here be the timeline template, charted like a course on the seven seas -->
+<template>
+  <div class="timeline-container">
+    <div class="timeline-header">
+      <h2 class="slds-text-heading_small">Case Timeline</h2>
+    </div>
+
+    <!-- Blimey! Show the spinner while we be loadin' the booty -->
+    <div if:true={isLoading} class="slds-spinner_container">
+      <lightning-spinner alternative-text="Loading timeline" size="small"></lightning-spinner>
+    </div>
+
+    <!-- If Davy Jones strikes, show the error message -->
+    <div if:true={error} class="slds-box slds-theme_alert-texture slds-theme_error">
+      <p class="slds-text-color_error">{error}</p>
+    </div>
+
+    <!-- Hoist the mainsail and display the events! -->
+    <div if:true={timelineEvents.length} class="slds-timeline">
+      <template for:each={timelineEvents} for:item="event">
+        <div key={event.id} class="slds-timeline__item">
+          <!-- Arr, the event marker like a ship on the horizon -->
+          <div class="slds-timeline__marker {event.iconClass}">
+            <lightning-icon icon-name={event.iconName} alternative-text={event.eventType}></lightning-icon>
+          </div>
+
+          <!-- The event details, written in the ship's log -->
+          <div class="slds-timeline__details slds-box slds-theme_default">
+            <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-size_1-of-1">
+                <p class="slds-text-heading_small slds-m-bottom_small">{event.title}</p>
+              </div>
+              <div class="slds-col slds-size_1-of-1">
+                <p class="slds-text-body_small slds-m-bottom_x-small">{event.description}</p>
+              </div>
+              <div class="slds-col slds-size_1-of-1">
+                <p class="slds-text-body_small slds-text-color_weak">
+                  <lightning-formatted-date-time value={event.formattedDate}></lightning-formatted-date-time>
+                </p>
+              </div>
+              <template if:true={event.createdBy}>
+                <div class="slds-col slds-size_1-of-1">
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    By: {event.createdBy}
+                  </p>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- If there be no events, the treasure be empty -->
+    <div if:false={timelineEvents.length} if:false={isLoading} class="slds-box slds-theme_shade">
+      <p class="slds-text-body_regular">No timeline events found for this case. The log be empty!</p>
+    </div>
+  </div>
+</template>

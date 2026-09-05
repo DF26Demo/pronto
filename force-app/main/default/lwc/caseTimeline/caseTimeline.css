@@ -1,0 +1,130 @@
+/* Arr, style this timeline like a proper ship's deck! */
+
+.timeline-container {
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.timeline-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #ecebea;
+  padding-bottom: 1rem;
+}
+
+.slds-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.slds-timeline::before {
+  /* Blimey! The vertical line like the mast of a ship */
+  content: '';
+  position: absolute;
+  left: 0.25rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ecebea;
+}
+
+.slds-timeline__item {
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.slds-timeline__marker {
+  /* Arr, this be the treasure marker on our map */
+  position: absolute;
+  left: -2.5rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2px solid #ecebea;
+  z-index: 1;
+}
+
+.slds-timeline__marker.event-created {
+  background-color: #ecebea;
+  border-color: #0070d2;
+}
+
+.slds-timeline__marker.event-status {
+  background-color: #ecebea;
+  border-color: #fbb81b;
+}
+
+.slds-timeline__marker.event-comment {
+  background-color: #ecebea;
+  border-color: #04844b;
+}
+
+.slds-timeline__marker.event-activity {
+  background-color: #ecebea;
+  border-color: #c23030;
+}
+
+.slds-timeline__marker.event-updated {
+  background-color: #ecebea;
+  border-color: #7c3aed;
+}
+
+.slds-timeline__marker lightning-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.slds-timeline__details {
+  /* Here be the event details, clear as day on the high seas */
+  flex-grow: 1;
+  margin-left: 1rem;
+  border-left: 3px solid #ecebea;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.slds-timeline__details:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.slds-timeline__details.event-created {
+  border-left-color: #0070d2;
+}
+
+.slds-timeline__details.event-status {
+  border-left-color: #fbb81b;
+}
+
+.slds-timeline__details.event-comment {
+  border-left-color: #04844b;
+}
+
+.slds-timeline__details.event-activity {
+  border-left-color: #c23030;
+}
+
+.slds-timeline__details.event-updated {
+  border-left-color: #7c3aed;
+}
+
+/* Responsive design - keep the ship sailin' smooth on all devices */
+@media (max-width: 48rem) {
+  .timeline-container {
+    padding: 0.5rem;
+  }
+
+  .slds-timeline {
+    padding-left: 1.5rem;
+  }
+
+  .slds-timeline__marker {
+    left: -2rem;
+  }
+}

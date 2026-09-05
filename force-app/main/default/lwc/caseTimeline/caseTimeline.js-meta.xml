@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <!-- Arr, this be the metadata fer our timeline component -->
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <!-- Blimey! Make it available on case record pages -->
+        <target>lightning__RecordPage</target>
+        <!-- And on the app page fer testing purposes -->
+        <target>lightning__AppPage</target>
+    </targets>
+    <!-- Configuration properties fer the component -->
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <!-- Here be where the captain configures the timeline on the case page -->
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
