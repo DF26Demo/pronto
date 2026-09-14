@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file tells Salesforce where this component can be used, like a treasure map -->
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <!-- Make it available on Account record pages -->
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <!-- Configure it specifically for Account pages -->
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+    <masterLabel>Account Timeline</masterLabel>
+    <description>A timeline component that displays activities for an Account record</description>
+</LightningComponentBundle>

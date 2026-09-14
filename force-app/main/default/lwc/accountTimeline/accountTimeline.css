@@ -1,0 +1,27 @@
+/* Arr, these styles make our timeline look shipshape */
+
+.timeline-container {
+    padding: 1rem;
+}
+
+/* Make the timeline line more visible, like the mast of a ship */
+.slds-timeline__item_task::before {
+    background-color: #0176d3;
+}
+
+/* Add some breathing room between timeline items */
+.slds-timeline__item {
+    padding-bottom: 1.5rem;
+}
+
+/* Make the activity cards stand out like treasure chests */
+.slds-box {
+    border-radius: 0.25rem;
+}
+
+/* Ensure text doesn't overflow like water over the gunwale */
+.slds-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
