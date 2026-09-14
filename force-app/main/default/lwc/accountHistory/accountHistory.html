@@ -1,0 +1,48 @@
+<template>
+    <lightning-card title="Account History" icon-name="standard:timesheet">
+        <!-- Arr, show the loading spinner while we fetch the booty from the seven seas -->
+        <template if:true={isLoading}>
+            <div class="slds-m-around_medium">
+                <lightning-spinner alternative-text="Loading history..."></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Blimey! Show an error message if we hit stormy waters -->
+        <template if:true={error}>
+            <div class="slds-m-around_medium">
+                <p class="slds-text-color_error">
+                    {error}
+                </p>
+            </div>
+        </template>
+
+        <!-- Hoist the sails! Display the history records if we found treasure -->
+        <template if:true={hasHistory}>
+            <div class="slds-m-around_small">
+                <template for:each={historyRecords} for:item="record">
+                    <div key={record.Id} class="history-record slds-box slds-m-bottom_small">
+                        <div class="slds-grid slds-gutters_small">
+                            <div class="slds-col slds-size_1-of-4">
+                                <p class="slds-text-body_small slds-text-color_weak">Field Changed</p>
+                                <p class="slds-text-body_regular"><strong>{record.Field}</strong></p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <p class="slds-text-body_small slds-text-color_weak">Old Value</p>
+                                <p class="slds-text-body_regular">{record.OldValue}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <p class="slds-text-body_small slds-text-color_weak">New Value</p>
+                                <p class="slds-text-body_regular">{record.NewValue}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <p class="slds-text-body_small slds-text-color_weak">Changed By</p>
+                                <p class="slds-text-body_regular">{record.ChangedBy}</p>
+                                <p class="slds-text-body_small slds-text-color_weak">{record.ChangedDate}</p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </lightning-card>
+</template>

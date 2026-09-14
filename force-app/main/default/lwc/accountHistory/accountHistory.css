@@ -1,0 +1,9 @@
+/* Arr, make the history records look shipshape and Bristol fashion */
+.history-record {
+    border-left: 3px solid #0176d3;
+    transition: all 0.2s ease;
+}
+
+.history-record:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
