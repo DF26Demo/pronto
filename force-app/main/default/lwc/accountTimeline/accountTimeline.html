@@ -1,0 +1,78 @@
+<template>
+    <lightning-card title="Account Timeline" icon-name="standard:timesheet">
+        <div class="slds-p-horizontal_small">
+            <template if:true={hasEvents}>
+                <!-- Arr! The timeline of events stretches before ye like a map to buried treasure -->
+                <div class="timeline-container slds-p-vertical_small">
+                    <template for:each={timelineEvents} for:item="event">
+                        <div key={event.id} class="timeline-item slds-grid slds-m-bottom_medium">
+                            <!-- Timeline marker and line -->
+                            <div class="timeline-marker-container slds-col slds-size_1-of-12">
+                                <div class="slds-timeline__icon slds-timeline__icon_small">
+                                    <span class={event.iconContainerClass}>
+                                        <lightning-icon 
+                                            icon-name={event.icon} 
+                                            alternative-text={event.type}
+                                            size="x-small"
+                                        ></lightning-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Event details -->
+                            <div class="slds-col slds-size_11-of-12 slds-p-left_small">
+                                <article class="slds-box slds-box_x-small slds-theme_shade">
+                                    <div class="slds-grid slds-grid_align-spread">
+                                        <div class="slds-col">
+                                            <h3 class="slds-text-heading_small slds-truncate" title={event.title}>
+                                                {event.title}
+                                            </h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                <lightning-formatted-date-time 
+                                                    value={event.date}
+                                                    year="numeric"
+                                                    month="short"
+                                                    day="2-digit"
+                                                    hour="2-digit"
+                                                    minute="2-digit"
+                                                ></lightning-formatted-date-time>
+                                            </p>
+                                        </div>
+                                        <div class="slds-col slds-no-flex">
+                                            <lightning-badge label={event.type}></lightning-badge>
+                                        </div>
+                                    </div>
+                                    <template if:true={event.description}>
+                                        <p class="slds-m-top_x-small slds-text-body_small">
+                                            {event.description}
+                                        </p>
+                                    </template>
+                                </article>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            
+            <template if:false={hasEvents}>
+                <template if:false={error}>
+                    <!-- Smooth sailing - no events yet! -->
+                    <div class="slds-p-around_medium slds-text-align_center">
+                        <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_small"></lightning-icon>
+                        <p class="slds-text-color_weak">No timeline events found. Start creating Cases, Opportunities, or Activities!</p>
+                    </div>
+                </template>
+            </template>
+
+            <template if:true={error}>
+                <!-- Blimey! We've hit an iceberg -->
+                <div class="slds-p-around_medium">
+                    <div class="slds-text-color_error">
+                        <lightning-icon icon-name="utility:error" size="small" variant="error" class="slds-m-right_x-small"></lightning-icon>
+                        Error loading timeline: {error}
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
