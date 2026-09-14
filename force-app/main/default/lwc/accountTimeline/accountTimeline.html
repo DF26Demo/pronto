@@ -1,0 +1,97 @@
+<template>
+    <!-- Arr, this be the timeline view for all Account activities -->
+    <lightning-card title="Activity Timeline" icon-name="standard:timeline">
+        
+        <!-- Show a spinner while we're fetchin' the data -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_medium slds-text-align_center">
+                <lightning-spinner alternative-text="Loading timeline..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Blimey! Show an error if something went wrong -->
+        <template if:true={error}>
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Shiver me timbers! Error loading activities: {error.body.message}
+                </div>
+            </div>
+        </template>
+
+        <!-- Here be the timeline itself, displayed when data arrives -->
+        <template if:true={hasActivities}>
+            <div class="timeline-container">
+                <ul class="slds-timeline">
+                    <template for:each={activities} for:item="activity">
+                        <li key={activity.id}>
+                            <div class="slds-timeline__item_expandable slds-timeline__item_task">
+                                <span class="slds-assistive-text">Activity</span>
+                                
+                                <!-- The icon that marks this point on the timeline -->
+                                <div class="slds-media">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon 
+                                            icon-name={activity.iconName}
+                                            alternative-text={activity.type}
+                                            size="small"
+                                            variant={activity.iconVariant}>
+                                        </lightning-icon>
+                                    </div>
+                                    
+                                    <!-- The activity details, like entries in a ship's log -->
+                                    <div class="slds-media__body">
+                                        <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+                                            <div class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75">
+                                                <h3 class="slds-truncate" title={activity.subject}>
+                                                    <strong>{activity.subject}</strong>
+                                                </h3>
+                                            </div>
+                                            <div class="slds-timeline__actions slds-timeline__actions_inline">
+                                                <span class="slds-text-body_small slds-text-color_weak">
+                                                    {activity.displayDate}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Additional details about this activity -->
+                                        <div class="slds-box slds-theme_shade slds-m-top_x-small slds-p-around_small">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <p class="slds-text-body_small">
+                                                        <strong>Type:</strong> {activity.type}
+                                                    </p>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <p class="slds-text-body_small">
+                                                        <strong>Status:</strong> {activity.status}
+                                                    </p>
+                                                </div>
+                                                <template if:true={activity.description}>
+                                                    <div class="slds-col slds-size_1-of-1 slds-m-top_x-small">
+                                                        <p class="slds-text-body_small">
+                                                            {activity.description}
+                                                        </p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+
+        <!-- If there be no activities, show this message -->
+        <template if:false={hasActivities}>
+            <template if:false={isLoading}>
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No activities found for this account yet, matey!</p>
+                </div>
+            </template>
+        </template>
+
+    </lightning-card>
+</template>
