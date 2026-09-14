@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="Account History" icon-name="standard:tracking">
+        <template if:true={hasHistory}>
+            <!-- Arr! Display the ship's log of account changes -->
+            <lightning-datatable
+                key-field="Id"
+                data={historyRecords}
+                columns={columns}
+                sort-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={handleSort}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </template>
+        
+        <template if:false={hasHistory}>
+            <template if:false={error}>
+                <!-- No history found - this account be untouched! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No account history found. This account hasn't been modified yet.</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit an iceberg -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading account history: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
