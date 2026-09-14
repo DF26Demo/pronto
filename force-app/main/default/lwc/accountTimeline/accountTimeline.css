@@ -1,0 +1,40 @@
+/* Arr! Custom styles to make our timeline prettier than a sunset on the Caribbean */
+
+.timeline-container {
+    position: relative;
+}
+
+.timeline-item {
+    position: relative;
+}
+
+/* The vertical line connecting events - like a rope connecting ships in a fleet */
+.timeline-item:not(:last-child) .timeline-marker-container::after {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: calc(100% + 1rem);
+    background-color: #dddbda;
+}
+
+.timeline-marker-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.25rem;
+}
+
+/* Make the icon containers round like ship portholes */
+.timeline-marker-container .slds-icon_container {
+    border-radius: 50%;
+    padding: 0.5rem;
+}
+
+/* Smooth hover effect - like waves lapping at the hull */
+.timeline-item article:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease-in-out;
+}
