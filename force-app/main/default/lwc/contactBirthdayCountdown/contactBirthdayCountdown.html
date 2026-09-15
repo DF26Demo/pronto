@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="Contact Birthday Countdown" icon-name="standard:event">
+        <template if:true={hasContacts}>
+            <!-- Arr! Display the treasure trove of upcoming birthdays -->
+            <lightning-datatable
+                key-field="contactId"
+                data={contacts}
+                columns={columns}
+                sort-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={handleSort}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </template>
+        
+        <template if:false={hasContacts}>
+            <template if:false={error}>
+                <!-- No birthdays found - must be a ship full of timeless pirates! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No contact birthdays found. Make sure yer contacts have birthdates!</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit a reef -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading birthdays: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
