@@ -1,0 +1,91 @@
+/* Arr, style this treasure chest to look shipshape! */
+.account-cases-finder {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.account-cases-finder h2 {
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.controls select {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.case-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.case-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.case-card h3 {
+  margin: 0 0 12px 0;
+  color: #111827;
+  font-size: 16px;
+}
+
+.case-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.case-meta span {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status { background: #e0e7ff; color: #3730a3; }
+.status-open { background: #dcfce7; color: #166534; }
+.status-closed { background: #f3f4f6; color: #4b5563; }
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-escalated { background: #fee2e2; color: #991b1b; }
+
+.priority { background: #f3f4f6; color: #374151; }
+.priority-critical { background: #fee2e2; color: #991b1b; font-weight: 700; }
+.priority-high { background: #fed7aa; color: #9a3412; }
+
+.case-description {
+  margin: 12px 0 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
