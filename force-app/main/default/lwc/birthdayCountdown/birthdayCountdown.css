@@ -1,0 +1,43 @@
+.countdown-container {
+    text-align: center;
+    padding: 1rem;
+}
+
+.days-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #0176d3;
+    line-height: 1;
+}
+
+.days-label {
+    font-size: 1.2rem;
+    color: #706e6b;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.birthday-message {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2e844a;
+    animation: celebrate 1s ease-in-out infinite;
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.next-birthday {
+    margin-top: 0.75rem;
+    color: #3e3e3c;
+}
+
+.no-birthdate {
+    text-align: center;
+    color: #706e6b;
+    padding: 1rem;
+}
