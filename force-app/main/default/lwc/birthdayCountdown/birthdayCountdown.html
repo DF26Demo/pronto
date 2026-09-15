@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={hasBirthdate}>
+                <div class="countdown-container">
+                    <div class="days-number">{daysUntilBirthday}</div>
+                    <div class="days-label">{daysLabel}</div>
+                    <template if:true={isBirthdayToday}>
+                        <div class="birthday-message">🎉 Ahoy! 'Tis their special day! 🎉</div>
+                    </template>
+                    <template if:false={isBirthdayToday}>
+                        <div class="next-birthday">Next birthday: {nextBirthdayDate}</div>
+                    </template>
+                </div>
+            </template>
+            <template if:false={hasBirthdate}>
+                <div class="no-birthdate">
+                    <lightning-icon icon-name="utility:info" size="small"></lightning-icon>
+                    <p>No birthdate be set for this contact, matey!</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
