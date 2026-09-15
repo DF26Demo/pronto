@@ -1,0 +1,44 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <template if:true={hasBirthdate}>
+            <!-- Arr! Display the countdown to the celebration -->
+            <div class="slds-p-around_medium slds-text-align_center">
+                <template if:true={showCelebration}>
+                    <div class="slds-text-heading_large slds-text-color_success slds-m-bottom_small">
+                        {birthdayMessage}
+                    </div>
+                </template>
+                <template if:false={showCelebration}>
+                    <div class="slds-text-heading_medium slds-m-bottom_small">
+                        {birthdayMessage}
+                    </div>
+                </template>
+                
+                <!-- Show the actual birthdate for reference -->
+                <template if:true={birthdate}>
+                    <div class="slds-text-body_small slds-text-color_weak">
+                        Birthdate: <lightning-formatted-date value={birthdate} format="MMMM d"></lightning-formatted-date>
+                    </div>
+                </template>
+            </div>
+        </template>
+        
+        <template if:false={hasBirthdate}>
+            <template if:false={error}>
+                <!-- No birthdate on record - the map be incomplete! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No birthdate information available for this contact.</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit rough waters -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading contact information
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
