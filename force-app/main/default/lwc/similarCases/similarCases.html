@@ -1,0 +1,65 @@
+<template>
+    <lightning-card title="Similar Cases" icon-name="standard:case">
+        <!-- Show spinner while we be searchin' the seven seas -->
+        <template if:true={isLoading}>
+            <div class="slds-align_absolute-center slds-p-around_medium">
+                <lightning-spinner alternative-text="Finding similar cases..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Blimey! Show the similar cases if we found any -->
+        <template if:true={hasCases}>
+            <div class="slds-p-around_small">
+                <template for:each={similarCases} for:item="case">
+                    <div key={case.Id} class="slds-box slds-m-bottom_small">
+                        <article class="slds-tile">
+                            <h3 class="slds-tile__title slds-truncate">
+                                <a href={case.caseUrl} data-id={case.Id} onclick={handleCaseClick}>
+                                    {case.CaseNumber}
+                                </a>
+                            </h3>
+                            <div class="slds-tile__detail">
+                                <dl class="slds-list_horizontal slds-wrap">
+                                    <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Subject">
+                                        Subject:
+                                    </dt>
+                                    <dd class="slds-item_detail slds-truncate" title={case.Subject}>
+                                        {case.Subject}
+                                    </dd>
+                                    <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Status">
+                                        Status:
+                                    </dt>
+                                    <dd class="slds-item_detail">
+                                        <lightning-badge label={case.Status}></lightning-badge>
+                                    </dd>
+                                    <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Priority">
+                                        Priority:
+                                    </dt>
+                                    <dd class="slds-item_detail">
+                                        <lightning-badge label={case.Priority}></lightning-badge>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </article>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Arr! No similar cases found - the seas be empty -->
+        <template if:false={hasCases}>
+            <template if:false={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_medium">
+                    <p class="slds-text-color_weak">No similar cases found, matey!</p>
+                </div>
+            </template>
+        </template>
+
+        <!-- Shiver me timbers! Show errors if the ship be sinkin' -->
+        <template if:true={error}>
+            <div class="slds-p-around_small">
+                <lightning-formatted-text value={error} class="slds-text-color_error"></lightning-formatted-text>
+            </div>
+        </template>
+    </lightning-card>
+</template>
