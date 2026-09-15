@@ -1,0 +1,46 @@
+<template>
+    <lightning-card title="Similar Cases" icon-name="standard:case">
+        <!-- Raise the sails! Show loading spinner while we search the seas -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_medium slds-align_absolute-center">
+                <lightning-spinner alternative-text="Loading similar cases..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Treasure found! Display the similar cases -->
+        <template if:true={hasSimilarCases}>
+            <ul class="slds-list_vertical slds-has-dividers_top-space">
+                <template for:each={similarCases} for:item="case">
+                    <li key={case.Id} class="slds-item slds-p-around_small">
+                        <div class="slds-grid slds-gutters_small" data-id={case.Id} onclick={handleCaseClick} style="cursor: pointer;">
+                            <div class="slds-col slds-size_1-of-1">
+                                <div class="slds-text-heading_small slds-text-color_default">
+                                    <lightning-icon icon-name="standard:case" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                    {case.CaseNumber}
+                                </div>
+                                <div class="slds-text-body_regular slds-m-top_xx-small slds-text-color_weak">
+                                    {case.Subject}
+                                </div>
+                                <div class="slds-grid slds-grid_vertical-align-center slds-m-top_xx-small">
+                                    <lightning-badge label={case.Status} class="slds-m-right_x-small"></lightning-badge>
+                                    <lightning-badge label={case.Priority} class="slds-m-right_x-small"></lightning-badge>
+                                    <span class="slds-text-body_small slds-text-color_weak">Owner: {case.Owner.Name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <!-- No treasure in sight - empty state -->
+        <template if:false={hasSimilarCases}>
+            <template if:false={isLoading}>
+                <div class="slds-p-around_medium slds-align_absolute-center">
+                    <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_small"></lightning-icon>
+                    <p class="slds-text-body_regular slds-text-color_weak">No similar cases found in these waters.</p>
+                </div>
+            </template>
+        </template>
+    </lightning-card>
+</template>
