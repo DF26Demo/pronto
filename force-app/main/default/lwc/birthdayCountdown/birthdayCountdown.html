@@ -1,0 +1,43 @@
+<template>
+    <!-- Arr! Our birthday countdown treasure display -->
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={showCountdown}>
+                <div class="slds-text-align_center">
+                    <!-- Blimey! Show different styles for birthday today vs. countdown -->
+                    <template if:true={isBirthdayToday}>
+                        <div class="slds-text-heading_large slds-text-color_success slds-m-bottom_small">
+                            🎂 Today! 🎂
+                        </div>
+                    </template>
+                    <template if:false={isBirthdayToday}>
+                        <div class="slds-text-heading_large slds-text-color_default slds-m-bottom_small">
+                            {daysUntilBirthday}
+                        </div>
+                        <div class="slds-text-body_small slds-text-color_weak">
+                            days remaining
+                        </div>
+                    </template>
+                    <div class="slds-m-top_medium slds-text-body_regular">
+                        {birthdayMessage}
+                    </div>
+                </div>
+            </template>
+            
+            <!-- If no birthdate be found, show this message to the crew -->
+            <template if:false={showCountdown}>
+                <div class="slds-text-align_center slds-text-color_weak">
+                    <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_x-small"></lightning-icon>
+                    <p>{birthdayMessage}</p>
+                </div>
+            </template>
+
+            <!-- Shiver me timbers! Display errors if the seas be rough -->
+            <template if:true={error}>
+                <div class="slds-text-color_error">
+                    Error loading birthday: {error.body.message}
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
