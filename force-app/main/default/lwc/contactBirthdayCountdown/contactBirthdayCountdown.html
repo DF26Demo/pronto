@@ -1,0 +1,34 @@
+<template>
+    <!-- Arr! Display the birthday countdown treasure -->
+    <template if:true={showCard}>
+        <lightning-card title="Birthday Countdown" icon-name="standard:event">
+            <div class="slds-p-around_medium">
+                <template if:true={isBirthdayToday}>
+                    <!-- Blimey! It's the birthday today! -->
+                    <div class="slds-text-heading_medium slds-text-align_center birthday-today">
+                        {countdownMessage}
+                    </div>
+                </template>
+                <template if:false={isBirthdayToday}>
+                    <!-- Show the countdown for future birthdays -->
+                    <div class="slds-text-body_regular">
+                        <lightning-icon icon-name="utility:date_time" size="small" class="slds-m-right_x-small"></lightning-icon>
+                        {countdownMessage}
+                    </div>
+                </template>
+            </div>
+        </lightning-card>
+    </template>
+    
+    <!-- If no birthdate be set, show a friendly message -->
+    <template if:false={birthdate}>
+        <lightning-card title="Birthday Countdown" icon-name="standard:event">
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_weak slds-text-body_small">
+                    <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    No birthdate available for this contact
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+</template>
