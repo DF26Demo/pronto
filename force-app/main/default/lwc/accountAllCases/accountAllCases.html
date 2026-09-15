@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="All Cases" icon-name="standard:case">
+        <div slot="actions">
+            <!-- Display the count of cases like a true pirate counts doubloons -->
+            <span class="slds-text-body_small slds-text-color_weak">
+                {caseCount} case(s) found
+            </span>
+        </div>
+        
+        <template if:true={hasCases}>
+            <!-- Arr! Display the complete treasure trove of cases -->
+            <lightning-datatable
+                key-field="Id"
+                data={cases}
+                columns={columns}
+                sort-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={handleSort}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </template>
+        
+        <template if:false={hasCases}>
+            <template if:false={error}>
+                <!-- No cases found - calm seas ahead! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <lightning-icon icon-name="utility:search" size="large" class="slds-m-bottom_small"></lightning-icon>
+                    <p class="slds-text-color_weak">No cases found for this account.</p>
+                    <p class="slds-text-color_weak slds-text-body_small">This account has no cases on record.</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit the rocks -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    <lightning-icon icon-name="utility:error" size="small" variant="error"></lightning-icon>
+                    Error loading cases: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
