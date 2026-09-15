@@ -1,0 +1,38 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <template if:true={hasDaysCount}>
+            <!-- Arr! Display the countdown to the birthday celebration -->
+            <div class="slds-p-around_medium slds-text-align_center">
+                <template if:true={isBirthdayToday}>
+                    <div class="slds-text-heading_large slds-text-color_success">
+                        {birthdayMessage}
+                    </div>
+                </template>
+                <template if:false={isBirthdayToday}>
+                    <div class="slds-text-heading_large slds-m-bottom_small">
+                        {daysUntilBirthday}
+                    </div>
+                    <div class="slds-text-body_regular slds-text-color_weak">
+                        {birthdayMessage}
+                    </div>
+                </template>
+            </div>
+        </template>
+        
+        <template if:true={noBirthdate}>
+            <!-- No birthdate found - the treasure map be incomplete! -->
+            <div class="slds-p-around_medium slds-text-align_center">
+                <p class="slds-text-color_weak">No birthdate on record for this contact.</p>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've encountered an error in uncharted waters -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading contact: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
