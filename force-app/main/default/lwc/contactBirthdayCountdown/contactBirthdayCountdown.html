@@ -1,0 +1,59 @@
+<template>
+    <lightning-card title="🎂 Contact Birthday Countdown" icon-name="standard:contact">
+        <div class="slds-p-around_medium">
+            <template if:true={hasContacts}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Birthdate">Birthdate</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Days Until">Days Until</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Ahoy! Loop through each contact like counting doubloons -->
+                        <template for:each={contacts} for:item="contact">
+                            <tr key={contact.Id} class={contact.isToday}>
+                                <td>
+                                    <div class="slds-truncate" title={contact.Name}>
+                                        {contact.Name}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">
+                                        <lightning-formatted-date value={contact.Birthdate}></lightning-formatted-date>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">
+                                        <strong>{contact.displayDays}</strong>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+            
+            <!-- Blow me down, no birthdays found! -->
+            <template if:false={hasContacts}>
+                <div class="slds-text-align_center slds-p-vertical_large">
+                    <p class="slds-text-color_weak">No contacts with birthdays found. Add some birthdates, ye landlubber!</p>
+                </div>
+            </template>
+            
+            <!-- Arrr, an error has occurred! -->
+            <template if:true={error}>
+                <div class="slds-text-color_error">
+                    Error loading contacts: {error.body.message}
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
