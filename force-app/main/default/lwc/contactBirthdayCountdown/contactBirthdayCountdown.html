@@ -1,0 +1,20 @@
+<template>
+    <!-- Arr! This be the treasure map showin' days 'til birthday -->
+    <lightning-card title="Birthday Countdown" icon-name="standard:event">
+        <div class="slds-m-around_medium">
+            <template if:true={hasBirthdate}>
+                <div class="slds-text-heading_medium slds-text-align_center slds-p-around_medium">
+                    {birthdayMessage}
+                </div>
+            </template>
+            
+            <!-- If no birthdate be set, we show this message like a warning flag -->
+            <template if:false={hasBirthdate}>
+                <div class="slds-text-align_center slds-text-color_weak">
+                    <lightning-icon icon-name="utility:info" size="small"></lightning-icon>
+                    <p class="slds-m-top_small">No birthdate set for this contact</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
