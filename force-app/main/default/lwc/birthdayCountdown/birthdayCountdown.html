@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="Birthday Countdown" icon-name="custom:custom14">
+        <div class="slds-p-around_medium">
+            <template if:true={hasValidBirthdate}>
+                <div class="slds-text-align_center slds-text-heading_large">
+                    {birthdayMessage}
+                </div>
+            </template>
+            
+            <template if:false={hasValidBirthdate}>
+                <div class="slds-text-align_center slds-text-color_weak">
+                    No birthdate available for this contact.
+                </div>
+            </template>
+
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-text-align_center">
+                    Error loading birthdate information.
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
