@@ -1,0 +1,48 @@
+<template>
+    <lightning-card title={cardTitle} icon-name="standard:case">
+        <template if:true={hasCases}>
+            <!-- Arr! Display the treasure trove of similar cases -->
+            <lightning-datatable
+                key-field="Id"
+                data={cases}
+                columns={columns}
+                sort-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={handleSort}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </template>
+        
+        <template if:false={hasCases}>
+            <template if:false={error}>
+                <!-- No similar cases found - uncharted waters! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <lightning-icon 
+                        icon-name="utility:search" 
+                        alternative-text="No results" 
+                        size="large"
+                        class="slds-m-bottom_small"
+                    ></lightning-icon>
+                    <p class="slds-text-heading_small slds-m-bottom_x-small">No Similar Cases Found</p>
+                    <p class="slds-text-color_weak">This case appears to be sailing solo on the high seas.</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit an iceberg -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    <lightning-icon 
+                        icon-name="utility:error" 
+                        variant="error" 
+                        size="small"
+                        class="slds-m-right_x-small"
+                    ></lightning-icon>
+                    Error loading similar cases: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
