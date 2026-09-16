@@ -1,0 +1,11 @@
+/* Arr! This be the styling for our component */
+
+/* Make the card title shine blue like the ocean */
+:host ::part(title) {
+    color: blue;
+}
+
+/* Alternative approach if the above doesn't work - targets the header */
+lightning-card {
+    --slds-c-card-heading-color-text: blue;
+}
