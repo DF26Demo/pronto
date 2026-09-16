@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="Account Cases" icon-name="standard:case">
+        <!-- Arr, here be the refresh button in the corner -->
+        <lightning-button-icon 
+            slot="actions" 
+            icon-name="utility:refresh" 
+            alternative-text="Refresh" 
+            onclick={handleRefresh}>
+        </lightning-button-icon>
+        
+        <!-- If we have cases, display 'em in a fine table -->
+        <template if:true={cases.length}>
+            <lightning-datatable
+                key-field="Id"
+                data={cases}
+                columns={columns}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+        
+        <!-- If the cargo hold be empty, show this message -->
+        <template if:true={hasNoCases}>
+            <div class="slds-p-around_medium slds-text-align_center">
+                <p class="slds-text-color_weak">No cases found for this account, matey!</p>
+            </div>
+        </template>
+        
+        <!-- If something went wrong on the voyage, show an error -->
+        <template if:true={error}>
+            <div class="slds-p-around_medium">
+                <p class="slds-text-color_error">Blimey! Error loading cases: {error.body.message}</p>
+            </div>
+        </template>
+    </lightning-card>
+</template>
