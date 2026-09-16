@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pirate Ship Performance Dashboard ⚓</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        /* Arr, pirate-themed dashboard styles follow the dataviz best practices! */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #fbbf24;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Blimey! Hero stat tiles - magnitude at a glance, no chart needed */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: #fbbf24;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+        }
+        
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stat-change.positive { color: #34d399; }
+        .stat-change.negative { color: #f87171; }
+        
+        /* Charts arranged in a responsive grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-card {
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        /* Walk the plank if ye make fat bars! These be thin, rounded, anchored to baseline */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 100%;
+            gap: 8px;
+            position: relative;
+        }
+        
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .bar {
+            width: 100%;
+            max-width: 48px;
+            background: var(--bar-color);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+        
+        .bar-label {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            text-align: center;
+        }
+        
+        /* Line charts sail with 2px lines - not too thick, not too thin */
+        .line-chart {
+            position: relative;
+            height: 100%;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .line-path {
+            fill: none;
+            stroke-width: 2px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .dot {
+            cursor: pointer;
+            transition: r 0.2s;
+        }
+        
+        .dot:hover {
+            r: 6;
+        }
+        
+        /* Tooltips appear on hover - interactive charts be the default! */
+        .tooltip {
+            position: absolute;
+            background: #0f172a;
+            border: 2px solid #fbbf24;
+            border-radius: 8px;
+            padding: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .tooltip.visible {
+            opacity: 1;
+        }
+        
+        .tooltip-label {
+            color: #94a3b8;
+            margin-bottom: 0.25rem;
+        }
+        
+        .tooltip-value {
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        /* Grid lines be recessive - they support but don't steal the show */
+        .grid-line {
+            stroke: #334155;
+            stroke-width: 1px;
+            stroke-dasharray: 2,4;
+        }
+        
+        .axis-label {
+            fill: #64748b;
+            font-size: 0.75rem;
+        }
+        
+        /* Legend always present for ≥2 series - identity never by color alone! */
+        .legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .legend-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>⚓ Pirate Ship Performance Dashboard</h1>
+        <p class="subtitle">Navigatin' the seven seas of data, matey!</p>
+        
+        <!-- Arr, stat tiles for hero numbers - magnitude at a glance! -->
+        <div class="stats-grid">
+            <div class="stat-card" style="--accent-color: #3b82f6;">
+                <div class="stat-label">🏴‍☠️ Total Plunder</div>
+                <div class="stat-value">47,392</div>
+                <div class="stat-change positive">▲ 23% from last voyage</div>
+            </div>
+            
+            <div class="stat-card" style="--accent-color: #fbbf24;">
+                <div class="stat-label">⚔️ Battles Won</div>
+                <div class="stat-value">156</div>
+                <div class="stat-change positive">▲ 12 this week</div>
+            </div>
+            
+            <div class="stat-card" style="--accent-color: #8b5cf6;">
+                <div class="stat-label">🗺️ Islands Charted</div>
+                <div class="stat-value">89</div>
+                <div class="stat-change positive">▲ 7 discovered</div>
+            </div>
+            
+            <div class="stat-card" style="--accent-color: #ec4899;">
+                <div class="stat-label">🍺 Crew Morale</div>
+                <div class="stat-value">94%</div>
+                <div class="stat-change positive">▲ 5% (rum rations increased!)</div>
+            </div>
+        </div>
+        
+        <!-- Blimey! Here be the charts that tell the tale of our adventures -->
+        <div class="charts-grid">
+            <!-- Bar chart - categorical comparison, thin bars with 4px rounded tops -->
+            <div class="chart-card">
+                <h3 class="chart-title">💰 Treasure by Type (doubloons)</h3>
+                <div class="chart-container">
+                    <div class="bar-chart" id="treasureChart"></div>
+                </div>
+                <div class="tooltip" id="tooltip1">
+                    <div class="tooltip-label"></div>
+                    <div class="tooltip-value"></div>
+                </div>
+            </div>
+            
+            <!-- Line chart - change over time with 2px lines, proper! -->
+            <div class="chart-card">
+                <h3 class="chart-title">📈 Plunder Trend (last 7 days)</h3>
+                <div class="chart-container">
+                    <svg id="lineChart" class="line-chart"></svg>
+                </div>
+                <div class="tooltip" id="tooltip2">
+                    <div class="tooltip-label"></div>
+                    <div class="tooltip-value"></div>
+                </div>
+            </div>
+            
+            <!-- Multi-series with legend - identity never by color alone! -->
+            <div class="chart-card">
+                <h3 class="chart-title">⚔️ Battle Stats (weekly)</h3>
+                <div class="chart-container">
+                    <svg id="battleChart" class="line-chart"></svg>
+                </div>
+                <div class="legend" id="battleLegend"></div>
+                <div class="tooltip" id="tooltip3">
+                    <div class="tooltip-label"></div>
+                    <div class="tooltip-value"></div>
+                </div>
+            </div>
+            
+            <!-- Stacked bars with 2px gaps between segments -->
+            <div class="chart-card">
+                <h3 class="chart-title">🗺️ Crew Activities (this week)</h3>
+                <div class="chart-container">
+                    <div class="bar-chart" id="crewChart"></div>
+                </div>
+                <div class="legend" id="crewLegend"></div>
+                <div class="tooltip" id="tooltip4">
+                    <div class="tooltip-label"></div>
+                    <div class="tooltip-value"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            ⚓ Fair winds and following seas! This dashboard updates faster than a cannonball flies! ⚓
+        </div>
+    </div>
+    
+    <script>
+        // Arr, here be the data that powers our charts, ye scallywag!
+        const treasureData = [
+            { label: 'Gold', value: 12500, color: '#fbbf24' },
+            { label: 'Jewels', value: 8200, color: '#8b5cf6' },
+            { label: 'Silver', value: 15300, color: '#94a3b8' },
+            { label: 'Artifacts', value: 6400, color: '#3b82f6' },
+            { label: 'Rum', value: 4992, color: '#ec4899' }
+        ];
+        
+        // Categorical colors in FIXED order - never cycled, or walk the plank!
+        const trendData = [
+            { day: 'Mon', value: 5200 },
+            { day: 'Tue', value: 6100 },
+            { day: 'Wed', value: 5800 },
+            { day: 'Thu', value: 7300 },
+            { day: 'Fri', value: 8100 },
+            { day: 'Sat', value: 9200 },
+            { day: 'Sun', value: 8900 }
+        ];
+        
+        // Multi-series data - legend required for identity (≥2 series)
+        const battleData = {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            series: [
+                { name: 'Victories', color: '#34d399', values: [12, 15, 18, 22] },
+                { name: 'Draws', color: '#fbbf24', values: [5, 4, 6, 5] },
+                { name: 'Retreats', color: '#f87171', values: [3, 2, 1, 2] }
+            ]
+        };
+        
+        const crewData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            series: [
+                { name: 'Sailing', color: '#3b82f6', values: [40, 45, 42, 48, 50] },
+                { name: 'Fighting', color: '#f87171', values: [20, 25, 30, 22, 18] },
+                { name: 'Resting', color: '#34d399', values: [15, 10, 8, 10, 12] }
+            ]
+        };
+        
+        // Treasure bar chart - thin bars, rounded tops anchored to baseline like proper shipmates
+        function renderTreasureChart() {
+            const container = document.getElementById('treasureChart');
+            const tooltip = document.getElementById('tooltip1');
+            const maxValue = Math.max(...treasureData.map(d => d.value));
+            
+            treasureData.forEach(item => {
+                const group = document.createElement('div');
+                group.className = 'bar-group';
+                
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                const height = (item.value / maxValue) * 100;
+                bar.style.height = `${height}%`;
+                bar.style.setProperty('--bar-color', item.color);
+                
+                // Interactive by default - hover tooltips on every mark!
+                bar.addEventListener('mouseenter', (e) => {
+                    tooltip.querySelector('.tooltip-label').textContent = item.label;
+                    tooltip.querySelector('.tooltip-value').textContent = item.value.toLocaleString() + ' doubloons';
+                    tooltip.classList.add('visible');
+                });
+                
+                bar.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY - 10 + 'px';
+                });
+                
+                bar.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('visible');
+                });
+                
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.textContent = item.label;
+                
+                group.appendChild(bar);
+                group.appendChild(label);
+                container.appendChild(group);
+            });
+        }
+        
+        // Line chart with 2px lines and hover tooltips - smooth sailin'!
+        function renderLineChart() {
+            const svg = document.getElementById('lineChart');
+            const tooltip = document.getElementById('tooltip2');
+            const width = 500;
+            const height = 300;
+            const padding = 40;
+            
+            const maxValue = Math.max(...trendData.map(d => d.value));
+            const xStep = (width - padding * 2) / (trendData.length - 1);
+            
+            // Recessive grid lines - support the data, don't dominate like a mutinous first mate
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (height - padding * 2) * (i / 4);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', padding);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', width - padding);
+                line.setAttribute('y2', y);
+                line.setAttribute('class', 'grid-line');
+                svg.appendChild(line);
+            }
+            
+            // Build the path - 2px line weight be the sweet spot
+            let pathData = '';
+            trendData.forEach((d, i) => {
+                const x = padding + i * xStep;
+                const y = height - padding - ((d.value / maxValue) * (height - padding * 2));
+                pathData += (i === 0 ? 'M' : 'L') + ` ${x} ${y} `;
+            });
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', pathData);
+            path.setAttribute('class', 'line-path');
+            path.setAttribute('stroke', '#3b82f6');
+            svg.appendChild(path);
+            
+            // Dots with hover - hit targets bigger than the marks themselves
+            trendData.forEach((d, i) => {
+                const x = padding + i * xStep;
+                const y = height - padding - ((d.value / maxValue) * (height - padding * 2));
+                
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', 4);
+                circle.setAttribute('fill', '#3b82f6');
+                circle.setAttribute('class', 'dot');
+                
+                circle.addEventListener('mouseenter', (e) => {
+                    tooltip.querySelector('.tooltip-label').textContent = d.day;
+                    tooltip.querySelector('.tooltip-value').textContent = d.value.toLocaleString() + ' doubloons';
+                    tooltip.classList.add('visible');
+                });
+                
+                circle.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY - 10 + 'px';
+                });
+                
+                circle.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('visible');
+                });
+                
+                svg.appendChild(circle);
+                
+                // X-axis labels in text tokens, not series colors
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', height - 15);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('class', 'axis-label');
+                text.textContent = d.day;
+                svg.appendChild(text);
+            });
+        }
+        
+        // Multi-series battle chart - legend always present (≥2 series rule!)
+        function renderBattleChart() {
+            const svg = document.getElementById('battleChart');
+            const legend = document.getElementById('battleLegend');
+            const tooltip = document.getElementById('tooltip3');
+            const width = 500;
+            const height = 300;
+            const padding = 40;
+            
+            const maxValue = Math.max(...battleData.series.flatMap(s => s.values));
+            const xStep = (width - padding * 2) / (battleData.labels.length - 1);
+            
+            // Grid lines that know their place
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (height - padding * 2) * (i / 4);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', padding);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', width - padding);
+                line.setAttribute('y2', y);
+                line.setAttribute('class', 'grid-line');
+                svg.appendChild(line);
+            }
+            
+            // Render each series - color follows the entity through thick and thin
+            battleData.series.forEach(series => {
+                let pathData = '';
+                series.values.forEach((value, i) => {
+                    const x = padding + i * xStep;
+                    const y = height - padding - ((value / maxValue) * (height - padding * 2));
+                    pathData += (i === 0 ? 'M' : 'L') + ` ${x} ${y} `;
+                });
+                
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.setAttribute('class', 'line-path');
+                path.setAttribute('stroke', series.color);
+                svg.appendChild(path);
+                
+                // Dots for each data point
+                series.values.forEach((value, i) => {
+                    const x = padding + i * xStep;
+                    const y = height - padding - ((value / maxValue) * (height - padding * 2));
+                    
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', x);
+                    circle.setAttribute('cy', y);
+                    circle.setAttribute('r', 4);
+                    circle.setAttribute('fill', series.color);
+                    circle.setAttribute('class', 'dot');
+                    
+                    circle.addEventListener('mouseenter', (e) => {
+                        tooltip.querySelector('.tooltip-label').textContent = `${series.name} - ${battleData.labels[i]}`;
+                        tooltip.querySelector('.tooltip-value').textContent = value + ' battles';
+                        tooltip.classList.add('visible');
+                    });
+                    
+                    circle.addEventListener('mousemove', (e) => {
+                        tooltip.style.left = e.pageX + 10 + 'px';
+                        tooltip.style.top = e.pageY - 10 + 'px';
+                    });
+                    
+                    circle.addEventListener('mouseleave', () => {
+                        tooltip.classList.remove('visible');
+                    });
+                    
+                    svg.appendChild(circle);
+                });
+                
+                // Legend item - text wears text tokens, colored marker carries identity
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                
+                const marker = document.createElement('div');
+                marker.className = 'legend-marker';
+                marker.style.backgroundColor = series.color;
+                
+                const label = document.createElement('span');
+                label.textContent = series.name;
+                label.style.color = '#e2e8f0'; // Text in primary ink, never series color!
+                
+                legendItem.appendChild(marker);
+                legendItem.appendChild(label);
+                legend.appendChild(legendItem);
+            });
+            
+            // X-axis labels
+            battleData.labels.forEach((label, i) => {
+                const x = padding + i * xStep;
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', height - 15);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('class', 'axis-label');
+                text.textContent = label;
+                svg.appendChild(text);
+            });
+        }
+        
+        // Stacked bar chart with proper 2px surface gaps between segments
+        function renderCrewChart() {
+            const container = document.getElementById('crewChart');
+            const legend = document.getElementById('crewLegend');
+            const tooltip = document.getElementById('tooltip4');
+            
+            // Calculate totals for scaling
+            const totals = crewData.labels.map((_, i) => 
+                crewData.series.reduce((sum, s) => sum + s.values[i], 0)
+            );
+            const maxTotal = Math.max(...totals);
+            
+            crewData.labels.forEach((label, dayIndex) => {
+                const group = document.createElement('div');
+                group.className = 'bar-group';
+                
+                const barContainer = document.createElement('div');
+                barContainer.style.width = '100%';
+                barContainer.style.maxWidth = '48px';
+                barContainer.style.height = `${(totals[dayIndex] / maxTotal) * 100}%`;
+                barContainer.style.display = 'flex';
+                barContainer.style.flexDirection = 'column-reverse';
+                barContainer.style.borderRadius = '4px 4px 0 0';
+                barContainer.style.overflow = 'hidden';
+                
+                // Stack segments with 2px surface gap (proper spacing like a well-organized ship!)
+                crewData.series.forEach((series, seriesIndex) => {
+                    const segment = document.createElement('div');
+                    const segmentHeight = (series.values[dayIndex] / totals[dayIndex]) * 100;
+                    segment.style.height = `${segmentHeight}%`;
+                    segment.style.backgroundColor = series.color;
+                    segment.style.cursor = 'pointer';
+                    segment.style.transition = 'opacity 0.2s';
+                    
+                    // 2px gap between segments (except the first one at the bottom)
+                    if (seriesIndex > 0) {
+                        segment.style.marginTop = '2px';
+                    }
+                    
+                    segment.addEventListener('mouseenter', (e) => {
+                        tooltip.querySelector('.tooltip-label').textContent = `${label} - ${series.name}`;
+                        tooltip.querySelector('.tooltip-value').textContent = series.values[dayIndex] + ' crew members';
+                        tooltip.classList.add('visible');
+                        segment.style.opacity = '0.8';
+                    });
+                    
+                    segment.addEventListener('mousemove', (e) => {
+                        tooltip.style.left = e.pageX + 10 + 'px';
+                        tooltip.style.top = e.pageY - 10 + 'px';
+                    });
+                    
+                    segment.addEventListener('mouseleave', () => {
+                        tooltip.classList.remove('visible');
+                        segment.style.opacity = '1';
+                    });
+                    
+                    barContainer.appendChild(segment);
+                });
+                
+                const dayLabel = document.createElement('div');
+                dayLabel.className = 'bar-label';
+                dayLabel.textContent = label;
+                
+                group.appendChild(barContainer);
+                group.appendChild(dayLabel);
+                container.appendChild(group);
+            });
+            
+            // Create legend (required for ≥2 series!)
+            crewData.series.forEach(series => {
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                
+                const marker = document.createElement('div');
+                marker.className = 'legend-marker';
+                marker.style.backgroundColor = series.color;
+                
+                const label = document.createElement('span');
+                label.textContent = series.name;
+                label.style.color = '#e2e8f0';
+                
+                legendItem.appendChild(marker);
+                legendItem.appendChild(label);
+                legend.appendChild(legendItem);
+            });
+        }
+        
+        // Hoist the sails and render all charts! Let the data tell its tale!
+        renderTreasureChart();
+        renderLineChart();
+        renderBattleChart();
+        renderCrewChart();
+    </script>
+</body>
+</html>
