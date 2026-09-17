@@ -1,0 +1,75 @@
+<template>
+    <lightning-card title="Grandfather Clock" icon-name="custom:custom14">
+        <div class="clock-container">
+            <!-- Arrr, here be the mighty grandfather clock case -->
+            <svg viewBox="0 0 200 400" class="grandfather-clock">
+                <!-- Blimey! The wooden case of this fine timepiece -->
+                <rect x="50" y="50" width="100" height="150" rx="10" fill="#4a2c1a" stroke="#2d1810" stroke-width="2"/>
+                
+                <!-- Shiver me timbers! The clock face be here -->
+                <circle cx="100" cy="125" r="40" fill="#f5f5dc" stroke="#2d1810" stroke-width="2"/>
+                
+                <!-- These be the hour marks, like stars to navigate by -->
+                <circle cx="100" cy="90" r="2" fill="#2d1810"/>
+                <circle cx="125" cy="100" r="2" fill="#2d1810"/>
+                <circle cx="135" cy="125" r="2" fill="#2d1810"/>
+                <circle cx="125" cy="150" r="2" fill="#2d1810"/>
+                <circle cx="100" cy="160" r="2" fill="#2d1810"/>
+                <circle cx="75" cy="150" r="2" fill="#2d1810"/>
+                <circle cx="65" cy="125" r="2" fill="#2d1810"/>
+                <circle cx="75" cy="100" r="2" fill="#2d1810"/>
+                
+                <!-- The center bolt that holds the hands, arr! -->
+                <circle cx="100" cy="125" r="3" fill="#2d1810"/>
+                
+                <!-- By Davy Jones' locker, the hour hand -->
+                <line 
+                    x1="100" 
+                    y1="125" 
+                    x2={hourHandX}
+                    y2={hourHandY}
+                    stroke="#2d1810" 
+                    stroke-width="4" 
+                    stroke-linecap="round"
+                />
+                
+                <!-- The minute hand sails around like a swift schooner -->
+                <line 
+                    x1="100" 
+                    y1="125" 
+                    x2={minuteHandX}
+                    y2={minuteHandY}
+                    stroke="#2d1810" 
+                    stroke-width="3" 
+                    stroke-linecap="round"
+                />
+                
+                <!-- The second hand, quick as a cutlass strike! -->
+                <line 
+                    x1="100" 
+                    y1="125" 
+                    x2={secondHandX}
+                    y2={secondHandY}
+                    stroke="#8b0000" 
+                    stroke-width="2" 
+                    stroke-linecap="round"
+                />
+                
+                <!-- The lower cabinet, fit for storing treasure maps -->
+                <rect x="60" y="210" width="80" height="120" rx="5" fill="#4a2c1a" stroke="#2d1810" stroke-width="2"/>
+                <rect x="70" y="220" width="60" height="100" rx="3" fill="#6b3e1f" stroke="#2d1810" stroke-width="1"/>
+                
+                <!-- Decorative brass hardware, polished to a shine -->
+                <circle cx="100" cy="270" r="4" fill="#d4af37" stroke="#9a7a2a" stroke-width="1"/>
+                
+                <!-- The clock's wooden base, steady as a ship's keel -->
+                <rect x="50" y="340" width="100" height="20" fill="#3a1f0f" stroke="#2d1810" stroke-width="2"/>
+            </svg>
+            
+            <!-- Here be the digital time for landlubbers who can't read a clock face -->
+            <div class="digital-time">
+                {currentTime}
+            </div>
+        </div>
+    </lightning-card>
+</template>
