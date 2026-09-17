@@ -1,0 +1,42 @@
+<template>
+    <lightning-card title="My Opportunities" icon-name="standard:opportunity">
+        <div slot="actions">
+            <!-- Arr! Show the count of treasure in our hold -->
+            <span class="slds-text-title slds-p-right_small">
+                {opportunityCount} opportunities
+            </span>
+        </div>
+        
+        <template if:true={hasOpportunities}>
+            <!-- Arr! Display the treasure trove of opportunities -->
+            <lightning-datatable
+                key-field="Id"
+                data={opportunities}
+                columns={columns}
+                sort-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={handleSort}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </template>
+        
+        <template if:false={hasOpportunities}>
+            <template if:false={error}>
+                <!-- No opportunities found - time to hunt for new treasure! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">No opportunities found. Time to chart a course for new treasure!</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've hit an iceberg -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading opportunities: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
