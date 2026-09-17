@@ -1,0 +1,33 @@
+/* Arr, here be the styles that make this component look shipshape */
+
+.button-container {
+    position: relative;
+    min-height: 250px;
+    width: 100%;
+    border: 2px dashed #dddbda;
+    border-radius: 4px;
+    background-color: #fafaf9;
+    padding: 10px;
+}
+
+/* The dodgy button that runs from the cursor like a coward! */
+.dodgy-button {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Make it extra fancy when ye finally corner the scurvy button */
+.dodgy-button:hover {
+    box-shadow: 0 0 20px rgba(0, 112, 210, 0.6);
+}
+
+/* When disabled, the button stops runnin' - finally caught the slippery eel! */
+.dodgy-button:disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
