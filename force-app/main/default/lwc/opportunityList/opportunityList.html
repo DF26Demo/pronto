@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="All Opportunities" icon-name="standard:opportunity">
+        <!-- Ahoy! The main deck where we display all our opportunities -->
+        <div class="slds-m-around_medium">
+            <template if:true={hasOpportunities}>
+                <!-- Hoist the colors! Display the treasure in a fine data table -->
+                <lightning-datatable
+                    key-field="Id"
+                    data={opportunities}
+                    columns={columns}
+                    hide-checkbox-column
+                    show-row-number-column
+                    onrowaction={handleRowAction}>
+                </lightning-datatable>
+            </template>
+
+            <!-- Blimey! No opportunities found - the seas be empty -->
+            <template if:false={hasOpportunities}>
+                <template if:true={error}>
+                    <div class="slds-text-color_error slds-m-top_medium">
+                        <p>⚠️ Arr! We've encountered stormy seas:</p>
+                        <p>{error.body.message}</p>
+                    </div>
+                </template>
+                <template if:false={error}>
+                    <div class="slds-align_absolute-center slds-m-top_large">
+                        <lightning-icon icon-name="utility:anchor" size="large"></lightning-icon>
+                        <p class="slds-m-top_small">No opportunities found, matey! Time to set sail and find some treasure!</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
