@@ -1,0 +1,42 @@
+<template>
+    <lightning-card title="Helpdesk Ticket Intake" icon-name="standard:case">
+        <div class="slds-p-around_medium">
+            <!-- Arr, here be the form fields for ticket information -->
+            <lightning-input
+                label="Subject"
+                value={subject}
+                onchange={handleSubjectChange}
+                required
+                class="slds-m-bottom_small">
+            </lightning-input>
+
+            <lightning-textarea
+                label="Description"
+                value={description}
+                onchange={handleDescriptionChange}
+                required
+                class="slds-m-bottom_medium">
+            </lightning-textarea>
+
+            <!-- Blimey! This button be a slippery scallywag that moves when ye hover near it -->
+            <div class="button-container">
+                <lightning-button
+                    variant="brand"
+                    label="Submit Ticket"
+                    onclick={handleSubmit}
+                    class="evasive-button"
+                    data-id="submit-button"
+                    onmouseenter={moveButton}>
+                </lightning-button>
+            </div>
+
+            <!-- Success message after the ticket be successfully submitted -->
+            <template if:true={showSuccess}>
+                <div class="slds-m-top_medium">
+                    <lightning-icon icon-name="utility:success" size="small" alternative-text="Success"></lightning-icon>
+                    <span class="slds-m-left_x-small">Ticket submitted! Fair winds, matey!</span>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

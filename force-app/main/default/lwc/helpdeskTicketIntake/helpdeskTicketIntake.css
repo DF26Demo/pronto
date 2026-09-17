@@ -1,0 +1,24 @@
+/* Arr, this be the styling for our mischievous component */
+
+.button-container {
+    /* This container gives our button room to roam like the open ocean */
+    position: relative;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: visible;
+}
+
+.evasive-button {
+    /* The button be positioned absolutely, ready to sail at a moment's notice */
+    position: relative;
+    cursor: pointer;
+}
+
+/* When the mouse approaches, the button transforms faster than a ship catching wind */
+.evasive-button:hover {
+    /* The transform be handled by JavaScript, this just ensures smooth sailing */
+    z-index: 1000;
+}
