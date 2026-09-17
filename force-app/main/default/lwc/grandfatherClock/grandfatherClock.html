@@ -1,0 +1,70 @@
+<template>
+    <lightning-card title="Grandfather Clock" icon-name="custom:custom14">
+        <div class="clock-container">
+            <!-- Arr, here be the mighty grandfather clock in all its glory! -->
+            <svg class="grandfather-clock" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Blimey! The clock case, tall as a ship's mast -->
+                <rect x="60" y="120" width="80" height="250" fill="#8B4513" stroke="#654321" stroke-width="2" rx="5"/>
+                <rect x="65" y="125" width="70" height="240" fill="#A0522D" rx="3"/>
+                
+                <!-- Avast! The clock face housing at the top -->
+                <rect x="50" y="10" width="100" height="120" fill="#8B4513" stroke="#654321" stroke-width="2" rx="8"/>
+                <circle cx="100" cy="70" r="45" fill="#F5E6D3" stroke="#654321" stroke-width="3"/>
+                
+                <!-- Shiver me timbers! The hour markers on the clock face -->
+                <text x="100" y="35" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">12</text>
+                <text x="135" y="75" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">3</text>
+                <text x="100" y="105" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">6</text>
+                <text x="65" y="75" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">9</text>
+                
+                <!-- Yo ho ho! The minute markers, like compass points on a nautical chart -->
+                <g class="minute-markers">
+                    <line x1="100" y1="30" x2="100" y2="33" stroke="#666" stroke-width="1"/>
+                    <line x1="128" y1="42" x2="126" y2="44" stroke="#666" stroke-width="1"/>
+                    <line x1="138" y1="70" x2="135" y2="70" stroke="#666" stroke-width="1"/>
+                    <line x1="128" y1="98" x2="126" y2="96" stroke="#666" stroke-width="1"/>
+                    <line x1="100" y1="110" x2="100" y2="107" stroke="#666" stroke-width="1"/>
+                    <line x1="72" y1="98" x2="74" y2="96" stroke="#666" stroke-width="1"/>
+                    <line x1="62" y1="70" x2="65" y2="70" stroke="#666" stroke-width="1"/>
+                    <line x1="72" y1="42" x2="74" y2="44" stroke="#666" stroke-width="1"/>
+                </g>
+                
+                <!-- Here be the clock hands, steerin' through time like a ship's wheel! -->
+                <line
+                    x1="100" y1="70"
+                    x2={hourHandX}
+                    y2={hourHandY}
+                    stroke="#333"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    class="hour-hand"/>
+                
+                <line
+                    x1="100" y1="70"
+                    x2={minuteHandX}
+                    y2={minuteHandY}
+                    stroke="#333"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    class="minute-hand"/>
+                
+                <line
+                    x1="100" y1="70"
+                    x2={secondHandX}
+                    y2={secondHandY}
+                    stroke="#C41E3A"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    class="second-hand"/>
+                
+                <!-- The center jewel, keepin' all hands in place -->
+                <circle cx="100" cy="70" r="5" fill="#654321"/>
+                
+                <!-- Fair winds be blowin' through the pendulum window -->
+                <ellipse cx="100" cy="200" rx="15" ry="25" fill="#87CEEB" opacity="0.6" stroke="#654321" stroke-width="2"/>
+            </svg>
+            
+            <div class="digital-time">{currentTime}</div>
+        </div>
+    </lightning-card>
+</template>
