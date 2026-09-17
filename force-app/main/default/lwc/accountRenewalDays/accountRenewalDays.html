@@ -1,0 +1,42 @@
+<template>
+    <lightning-card title="Account Renewal" icon-name="standard:date_time">
+        <template if:true={hasRenewalDate}>
+            <!-- Arr! Display the countdown to renewal day -->            
+            <div class="slds-p-around_medium slds-text-align_center">
+                <div class="slds-text-heading_large slds-m-bottom_small">
+                    {daysUntilRenewal}
+                </div>
+                <lightning-badge 
+                    label={statusMessage}
+                    class={statusVariant}
+                >
+                </lightning-badge>
+            </div>
+        </template>
+        
+        <template if:false={hasRenewalDate}>
+            <template if:false={error}>
+                <!-- No renewal date set - uncharted waters! -->
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <lightning-icon 
+                        icon-name="utility:warning" 
+                        alternative-text="Warning" 
+                        size="small"
+                        class="slds-m-bottom_small"
+                    >
+                    </lightning-icon>
+                    <p class="slds-text-color_weak">No renewal date set for this account</p>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={error}>
+            <!-- Blimey! We've struck a rock -->
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">
+                    Error loading renewal date: {error.body.message}
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
