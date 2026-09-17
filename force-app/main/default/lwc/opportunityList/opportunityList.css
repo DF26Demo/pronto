@@ -1,0 +1,17 @@
+/* Arr! Styles to make our treasure map look shipshape */
+
+.slds-align_absolute-center {
+    text-align: center;
+}
+
+/* Make the empty state message look friendly, not like Davy Jones' locker */
+.slds-align_absolute-center p {
+    color: #706e6b;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+/* Polish the deck - add some breathing room */
+lightning-datatable {
+    border-radius: 0.25rem;
+}
