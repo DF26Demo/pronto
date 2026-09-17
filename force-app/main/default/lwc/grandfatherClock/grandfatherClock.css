@@ -1,0 +1,38 @@
+/* Arr, here be the styles to make this clock look as grand as a Spanish galleon! */
+
+.clock-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to bottom, #f0e6d2 0%, #d4c5a9 100%);
+    border-radius: 8px;
+}
+
+/* Blimey! The clock itself, standin' tall and proud */
+.grandfather-clock {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Shiver me timbers! The digital time display below, for landlubbers who can't read analog */
+.digital-time {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    border: 2px solid #8B4513;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Yo ho ho! Smooth transitions for the clock hands, like a ship glidin' through calm seas */
+.hour-hand, .minute-hand, .second-hand {
+    transition: all 0.3s ease-in-out;
+}
