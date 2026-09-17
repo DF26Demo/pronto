@@ -1,0 +1,59 @@
+<template>
+    <lightning-card title="Helpdesk Ticket Intake" icon-name="standard:case">
+        <div class="slds-p-around_medium">
+            <!-- Arr, this be the form where landlubbers submit their troubles -->
+            <lightning-input
+                label="Subject"
+                value={subject}
+                onchange={handleSubjectChange}
+                required
+                class="slds-m-bottom_small">
+            </lightning-input>
+
+            <lightning-textarea
+                label="Description"
+                value={description}
+                onchange={handleDescriptionChange}
+                required
+                class="slds-m-bottom_small">
+            </lightning-textarea>
+
+            <lightning-combobox
+                label="Priority"
+                value={priority}
+                placeholder="Select Priority"
+                options={priorityOptions}
+                onchange={handlePriorityChange}
+                class="slds-m-bottom_small">
+            </lightning-combobox>
+
+            <lightning-combobox
+                label="Category"
+                value={category}
+                placeholder="Select Category"
+                options={categoryOptions}
+                onchange={handleCategoryChange}
+                class="slds-m-bottom_medium">
+            </lightning-combobox>
+
+            <!-- Here be the button that runs like a coward from the cursor! -->
+            <div class="button-container">
+                <button
+                    class="slds-button slds-button_brand dodgy-button"
+                    onmouseenter={handleButtonHover}
+                    onclick={handleSubmit}
+                    disabled={isSubmitting}>
+                    {buttonLabel}
+                </button>
+            </div>
+
+            <!-- Show success message after the ticket be submitted -->
+            <template if:true={showSuccess}>
+                <div class="slds-notify slds-notify_alert slds-theme_success slds-m-top_medium" role="alert">
+                    <span class="slds-assistive-text">success</span>
+                    <h2>Ahoy! Yer ticket be submitted successfully, matey! 🏴‍☠️</h2>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
