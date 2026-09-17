@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Grandfather Clock" icon-name="custom:custom14">
+        <div class="clock-container">
+            <!-- Arr! Here be the mighty grandfather clock, standin' tall and proud -->
+            <div class="grandfather-clock">
+                <!-- The clock face where time tells its tale -->
+                <div class="clock-face">
+                    <!-- Hour hand - moves slow like a ship through fog -->
+                    <div class="hand hour-hand" style={hourHandStyle}></div>
+                    <!-- Minute hand - steady as she goes -->
+                    <div class="hand minute-hand" style={minuteHandStyle}></div>
+                    <!-- Second hand - tickin' away faster than a bosun's whistle -->
+                    <div class="hand second-hand" style={secondHandStyle}></div>
+                    <!-- The center pin, holdin' it all together like an anchor -->
+                    <div class="center-pin"></div>
+                </div>
+                
+                <!-- Blimey! The pendulum swings like a ship in gentle seas -->
+                <div class="pendulum">
+                    <div class="pendulum-rod"></div>
+                    <div class="pendulum-weight"></div>
+                </div>
+            </div>
+            
+            <!-- Digital display for landlubbers who can't read a proper clock face -->
+            <div class="digital-time">
+                {currentTime}
+            </div>
+        </div>
+    </lightning-card>
+</template>
