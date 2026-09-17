@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Renewal Countdown" icon-name="standard:account">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            
+            <template if:true={hasRenewalDate}>
+                <div class="renewal-container">
+                    <div class={daysClass}>
+                        {daysUntilRenewal}
+                    </div>
+                    <div class="slds-text-body_regular slds-m-top_x-small">
+                        {daysLabel}
+                    </div>
+                </div>
+            </template>
+            
+            <template if:false={hasRenewalDate}>
+                <div class="slds-text-color_weak slds-text-align_center">
+                    No renewal date set
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
