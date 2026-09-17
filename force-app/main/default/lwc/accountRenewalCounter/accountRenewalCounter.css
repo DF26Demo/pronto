@@ -1,0 +1,23 @@
+.renewal-container {
+    text-align: center;
+    padding: 1rem;
+}
+
+.days-number {
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Color the numbers based on urgency - like signal flags on a ship! */
+.text-success {
+    color: #2e844a;
+}
+
+.text-warning {
+    color: #dd7a01;
+}
+
+.text-danger {
+    color: #c23934;
+}
