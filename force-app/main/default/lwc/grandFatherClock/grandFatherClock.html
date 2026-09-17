@@ -1,0 +1,39 @@
+<template>
+    <lightning-card title="Grandfather Clock" icon-name="custom:custom14">
+        <div class="clock-container">
+            <!-- Arr, here be the majestic grandfather clock case -->
+            <div class="clock-case">
+                <div class="clock-top"></div>
+                
+                <!-- Blimey! The clock face where time be told -->
+                <div class="clock-face-container">
+                    <div class="clock-face">
+                        <!-- Shiver me timbers! Here be the hour markers -->
+                        <div class="hour-marker marker-12">XII</div>
+                        <div class="hour-marker marker-3">III</div>
+                        <div class="hour-marker marker-6">VI</div>
+                        <div class="hour-marker marker-9">IX</div>
+                        
+                        <!-- Avast! The hands that sail through time -->
+                        <div class="hand hour-hand" style={hourHandStyle}></div>
+                        <div class="hand minute-hand" style={minuteHandStyle}></div>
+                        <div class="hand second-hand" style={secondHandStyle}></div>
+                        <div class="center-dot"></div>
+                    </div>
+                </div>
+                
+                <!-- Here be the sturdy base of our timekeeper -->
+                <div class="clock-body">
+                    <div class="pendulum-window">
+                        <div class="pendulum" style={pendulumStyle}></div>
+                    </div>
+                </div>
+                
+                <div class="clock-base"></div>
+            </div>
+            
+            <!-- Yo ho ho! Display the time in digital format too -->
+            <div class="digital-time">{currentTime}</div>
+        </div>
+    </lightning-card>
+</template>

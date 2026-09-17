@@ -1,0 +1,188 @@
+/* Arr, here be the styling for our magnificent timepiece! */
+
+.clock-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to bottom, #f5f5dc 0%, #deb887 100%);
+    border-radius: 8px;
+}
+
+/* Blimey! The main grandfather clock case - sturdy as a ship's mast */
+.clock-case {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    position: relative;
+}
+
+/* Shiver me timbers! The ornate top of the clock */
+.clock-top {
+    width: 180px;
+    height: 40px;
+    background: linear-gradient(to bottom, #8b4513 0%, #654321 100%);
+    border-radius: 20px 20px 0 0;
+    border: 3px solid #654321;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Avast! The container for the clock face */
+.clock-face-container {
+    width: 180px;
+    padding: 15px;
+    background: linear-gradient(to bottom, #8b4513 0%, #654321 50%, #8b4513 100%);
+    border-left: 3px solid #654321;
+    border-right: 3px solid #654321;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Here be the clock face itself - round as a full moon! */
+.clock-face {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fffaf0 0%, #f5deb3 100%);
+    border: 8px solid #b8860b;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Yo ho ho! The Roman numerals marking the hours */
+.hour-marker {
+    position: absolute;
+    font-family: 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c1810;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.marker-12 { top: 5px; left: 50%; transform: translateX(-50%); }
+.marker-3 { right: 8px; top: 50%; transform: translateY(-50%); }
+.marker-6 { bottom: 5px; left: 50%; transform: translateX(-50%); }
+.marker-9 { left: 8px; top: 50%; transform: translateY(-50%); }
+
+/* Arr, the clock hands that point the way through time! */
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    background: #2c1810;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* The hour hand - short and stout like a pirate captain! */
+.hour-hand {
+    width: 6px;
+    height: 35px;
+    margin-left: -3px;
+    z-index: 3;
+}
+
+/* The minute hand - longer like a first mate's reach */
+.minute-hand {
+    width: 4px;
+    height: 50px;
+    margin-left: -2px;
+    z-index: 4;
+}
+
+/* The second hand - swift as a cutlass! */
+.second-hand {
+    width: 2px;
+    height: 55px;
+    margin-left: -1px;
+    background: #8b0000;
+    z-index: 5;
+}
+
+/* Blimey! The center dot where all hands meet */
+.center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: #2c1810;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* The body of the clock - tall and noble like a ship's hull */
+.clock-body {
+    width: 180px;
+    height: 200px;
+    background: linear-gradient(to bottom, #8b4513 0%, #654321 50%, #8b4513 100%);
+    border-left: 3px solid #654321;
+    border-right: 3px solid #654321;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Shiver me timbers! A window to watch the pendulum swing */
+.pendulum-window {
+    width: 60px;
+    height: 120px;
+    background: rgba(255, 250, 240, 0.3);
+    border: 2px solid #654321;
+    border-radius: 30px 30px 0 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Avast! The pendulum that swings like the rhythm of waves */
+.pendulum {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 80px;
+    background: #b8860b;
+    transform-origin: top center;
+    margin-left: -1.5px;
+}
+
+.pendulum::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #ffd700 0%, #b8860b 100%);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* The base - steady as a ship's anchor */
+.clock-base {
+    width: 200px;
+    height: 30px;
+    background: linear-gradient(to bottom, #654321 0%, #8b4513 100%);
+    border-radius: 0 0 10px 10px;
+    border: 3px solid #654321;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Yo ho ho! The digital time display below */
+.digital-time {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c1810;
+    font-family: 'Courier New', monospace;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    padding: 10px 20px;
+    background: rgba(139, 69, 19, 0.2);
+    border-radius: 8px;
+    border: 2px solid #8b4513;
+}
