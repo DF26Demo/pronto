@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metrics Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #f9f9f7;
+      color: #0b0b0b;
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0d0d0d;
+        color: #ffffff;
+      }
+    }
+
+    /* Arr, here be the color treasure map! */
+    .viz-root {
+      color-scheme: light;
+      --surface-1: #fcfcfb;
+      --page-plane: #f9f9f7;
+      --text-primary: #0b0b0b;
+      --text-secondary: #52514e;
+      --text-muted: #898781;
+      --gridline: #e1e0d9;
+      --baseline: #c3c2b7;
+      --border: rgba(11,11,11,0.10);
+
+      /* Categorical palette - in the proper order, ye scurvy dog! */
+      --series-1: #2a78d6;  /* blue */
+      --series-2: #eb6834;  /* orange */
+      --series-3: #1baf7a;  /* aqua */
+      --series-4: #eda100;  /* yellow */
+
+      /* Status colors - reserved for special occasions! */
+      --status-good: #0ca30c;
+      --status-warning: #fab219;
+      --status-critical: #d03b3b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .viz-root {
+        color-scheme: dark;
+        --surface-1: #1a1a19;
+        --page-plane: #0d0d0d;
+        --text-primary: #ffffff;
+        --text-secondary: #c3c2b7;
+        --text-muted: #898781;
+        --gridline: #2c2c2a;
+        --baseline: #383835;
+        --border: rgba(255,255,255,0.10);
+
+        --series-1: #3987e5;
+        --series-2: #d95926;
+        --series-3: #199e70;
+        --series-4: #c98500;
+
+        --status-good: #0ca30c;
+        --status-warning: #fab219;
+        --status-critical: #d03b3b;
+      }
+    }
+
+    .dashboard {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    /* Stat tiles - hero numbers without the clutter */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-tile {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .stat-delta {
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-delta.positive {
+      color: var(--status-good);
+    }
+
+    .stat-delta.negative {
+      color: var(--status-critical);
+    }
+
+    /* Chart containers */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-container {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .chart-canvas {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
+
+    /* Legend - always present for 2+ series */
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .legend-marker {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    /* Tooltip - the hover treasure! */
+    .tooltip {
+      position: absolute;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      font-size: 13px;
+    }
+
+    .tooltip.visible {
+      opacity: 1;
+    }
+
+    .tooltip-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .tooltip-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      color: var(--text-secondary);
+    }
+
+    .tooltip-marker {
+      width: 8px;
+      height: 8px;
+      border-radius: 1px;
+    }
+
+    .tooltip-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    svg {
+      overflow: visible;
+    }
+
+    /* Axis and grid styling */
+    .axis-line {
+      stroke: var(--baseline);
+      stroke-width: 1;
+    }
+
+    .grid-line {
+      stroke: var(--gridline);
+      stroke-width: 1;
+    }
+
+    .axis-label {
+      fill: var(--text-muted);
+      font-size: 11px;
+    }
+
+    /* Bar chart bars - with proper 2px gaps between 'em */
+    .bar {
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .bar:hover {
+      opacity: 0.8;
+    }
+
+    /* Line chart - thin strokes, rounded data-ends */
+    .line-path {
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .line-point {
+      cursor: pointer;
+      transition: r 0.15s;
+    }
+
+    .line-point:hover {
+      r: 6;
+    }
+
+    @media (max-width: 768px) {
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard viz-root">
+    <h1>⚓ Performance Dashboard</h1>
+
+    <!-- Arr, stat tiles be the quickest way to show the important numbers! -->
+    <div class="stat-grid">
+      <div class="stat-tile">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value">$847,293</div>
+        <div class="stat-delta positive">
+          ↑ <span>12.4%</span> <span style="color: var(--text-muted)">vs last month</span>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <div class="stat-label">Active Users</div>
+        <div class="stat-value">24,891</div>
+        <div class="stat-delta positive">
+          ↑ <span>8.2%</span> <span style="color: var(--text-muted)">vs last month</span>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <div class="stat-label">Conversion Rate</div>
+        <div class="stat-value">3.42%</div>
+        <div class="stat-delta negative">
+          ↓ <span>1.1%</span> <span style="color: var(--text-muted)">vs last month</span>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <div class="stat-label">Avg Order Value</div>
+        <div class="stat-value">$143</div>
+        <div class="stat-delta positive">
+          ↑ <span>5.7%</span> <span style="color: var(--text-muted)">vs last month</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts ahoy! -->
+    <div class="chart-grid">
+      <!-- Line chart - showing change over time like the tide -->
+      <div class="chart-container">
+        <div class="chart-title">Revenue Trend (Last 30 Days)</div>
+        <div class="chart-canvas" id="lineChart"></div>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-marker" style="background: var(--series-1)"></div>
+            <span>Current Period</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-marker" style="background: var(--series-2)"></div>
+            <span>Previous Period</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar chart - comparing magnitudes like treasure chests -->
+      <div class="chart-container">
+        <div class="chart-title">Revenue by Product Category</div>
+        <div class="chart-canvas" id="barChart"></div>
+      </div>
+    </div>
+
+    <!-- Another line chart with more series -->
+    <div class="chart-container" style="margin-bottom: 24px;">
+      <div class="chart-title">Traffic Sources</div>
+      <div class="chart-canvas" id="multiLineChart" style="height: 320px;"></div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-marker" style="background: var(--series-1)"></div>
+          <span>Organic Search</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-marker" style="background: var(--series-2)"></div>
+          <span>Direct</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-marker" style="background: var(--series-3)"></div>
+          <span>Social Media</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-marker" style="background: var(--series-4)"></div>
+          <span>Email Campaign</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Blimey! Here be the JavaScript that brings the charts to life!
+
+    // Sample data - ye can replace this with yer own treasure
+    const lineData = {
+      current: [28000, 31000, 29500, 34000, 37000, 35500, 39000, 42000, 40500, 43500, 46000, 44500, 48000, 51000, 49500, 52000, 54500, 53000, 56000, 58500, 57000, 60000, 62500, 61000, 64000, 66500, 65000, 68000, 70500, 69000],
+      previous: [25000, 27500, 26000, 29000, 31500, 30000, 33000, 35500, 34000, 36500, 39000, 37500, 40500, 43000, 41500, 44000, 46500, 45000, 47500, 50000, 48500, 51000, 53500, 52000, 54500, 57000, 55500, 58000, 60500, 59000]
+    };
+
+    const barData = [
+      { label: 'Electronics', value: 245000 },
+      { label: 'Clothing', value: 189000 },
+      { label: 'Home & Garden', value: 156000 },
+      { label: 'Sports', value: 134000 },
+      { label: 'Books', value: 123000 }
+    ];
+
+    const multiLineData = {
+      organic: [3200, 3400, 3300, 3600, 3900, 3800, 4100, 4400, 4300, 4600, 4900, 4800, 5100, 5400, 5300, 5600, 5900, 5800, 6100, 6400, 6300, 6600, 6900, 6800, 7100, 7400, 7300, 7600, 7900, 7800],
+      direct: [2100, 2200, 2150, 2300, 2450, 2400, 2550, 2700, 2650, 2800, 2950, 2900, 3050, 3200, 3150, 3300, 3450, 3400, 3550, 3700, 3650, 3800, 3950, 3900, 4050, 4200, 4150, 4300, 4450, 4400],
+      social: [1800, 1950, 1900, 2100, 2300, 2200, 2400, 2600, 2500, 2700, 2900, 2800, 3000, 3200, 3100, 3300, 3500, 3400, 3600, 3800, 3700, 3900, 4100, 4000, 4200, 4400, 4300, 4500, 4700, 4600],
+      email: [1200, 1250, 1230, 1300, 1380, 1350, 1420, 1500, 1480, 1560, 1640, 1620, 1700, 1780, 1760, 1840, 1920, 1900, 1980, 2060, 2040, 2120, 2200, 2180, 2260, 2340, 2320, 2400, 2480, 2460]
+    };
+
+    // Arr, tooltip treasure chest!
+    function createTooltip() {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      document.body.appendChild(tooltip);
+      return tooltip;
+    }
+
+    function showTooltip(tooltip, x, y, content) {
+      tooltip.innerHTML = content;
+      tooltip.style.left = x + 10 + 'px';
+      tooltip.style.top = y - 10 + 'px';
+      tooltip.classList.add('visible');
+    }
+
+    function hideTooltip(tooltip) {
+      tooltip.classList.remove('visible');
+    }
+
+    // Draw line chart - thin lines with rounded ends, just as the captain ordered!
+    function drawLineChart(containerId, data, colors) {
+      const container = document.getElementById(containerId);
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      const padding = { top: 20, right: 20, bottom: 40, left: 60 };
+      const chartWidth = width - padding.left - padding.right;
+      const chartHeight = height - padding.top - padding.bottom;
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', width);
+      svg.setAttribute('height', height);
+
+      const maxValue = Math.max(...Object.values(data).flat());
+      const minValue = Math.min(...Object.values(data).flat());
+      const valueRange = maxValue - minValue;
+      const yScale = chartHeight / (maxValue + valueRange * 0.1);
+      const xScale = chartWidth / (data[Object.keys(data)[0]].length - 1);
+
+      // Draw horizontal grid lines - subtle like sea mist
+      for (let i = 0; i <= 5; i++) {
+        const y = padding.top + (chartHeight / 5) * i;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class', 'grid-line');
+        line.setAttribute('x1', padding.left);
+        line.setAttribute('y1', y);
+        line.setAttribute('x2', padding.left + chartWidth);
+        line.setAttribute('y2', y);
+        svg.appendChild(line);
+
+        // Y-axis labels
+        const value = Math.round(maxValue - (maxValue / 5) * i);
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('class', 'axis-label');
+        label.setAttribute('x', padding.left - 10);
+        label.setAttribute('y', y + 4);
+        label.setAttribute('text-anchor', 'end');
+        label.textContent = '$' + (value / 1000).toFixed(0) + 'k';
+        svg.appendChild(label);
+      }
+
+      // Draw the lines and points
+      Object.keys(data).forEach((key, seriesIndex) => {
+        const points = data[key];
+        const color = colors[seriesIndex];
+
+        // Draw line path - thin and elegant like a cutlass!
+        let pathD = '';
+        points.forEach((value, i) => {
+          const x = padding.left + i * xScale;
+          const y = padding.top + chartHeight - (value * yScale);
+          pathD += (i === 0 ? 'M' : 'L') + x + ',' + y;
+        });
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', 'line-path');
+        path.setAttribute('d', pathD);
+        path.setAttribute('stroke', color);
+        svg.appendChild(path);
+
+        // Draw points - 8px markers with hover interaction
+        points.forEach((value, i) => {
+          const x = padding.left + i * xScale;
+          const y = padding.top + chartHeight - (value * yScale);
+
+          const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          point.setAttribute('class', 'line-point');
+          point.setAttribute('cx', x);
+          point.setAttribute('cy', y);
+          point.setAttribute('r', 4);
+          point.setAttribute('fill', color);
+
+          const tooltip = createTooltip();
+          point.addEventListener('mouseenter', (e) => {
+            showTooltip(tooltip, e.pageX, e.pageY, `
+              <div class="tooltip-title">Day ${i + 1}</div>
+              <div class="tooltip-row">
+                <div class="tooltip-marker" style="background: ${color}"></div>
+                <span>${key}: <span class="tooltip-value">$${value.toLocaleString()}</span></span>
+              </div>
+            `);
+          });
+          point.addEventListener('mouseleave', () => hideTooltip(tooltip));
+
+          svg.appendChild(point);
+        });
+      });
+
+      // X-axis - show every 5th day to avoid crowding
+      for (let i = 0; i < data[Object.keys(data)[0]].length; i += 5) {
+        const x = padding.left + i * xScale;
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('class', 'axis-label');
+        label.setAttribute('x', x);
+        label.setAttribute('y', padding.top + chartHeight + 20);
+        label.setAttribute('text-anchor', 'middle');
+        label.textContent = 'Day ' + (i + 1);
+        svg.appendChild(label);
+      }
+
+      container.appendChild(svg);
+    }
+
+    // Draw bar chart - with proper 2px gaps between bars!
+    function drawBarChart(containerId, data) {
+      const container = document.getElementById(containerId);
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      const padding = { top: 20, right: 20, bottom: 60, left: 80 };
+      const chartWidth = width - padding.left - padding.right;
+      const chartHeight = height - padding.top - padding.bottom;
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', width);
+      svg.setAttribute('height', height);
+
+      const maxValue = Math.max(...data.map(d => d.value));
+      const yScale = chartHeight / maxValue;
+      const barWidth = (chartWidth / data.length) - 2; // 2px gap between bars, as the specs command!
+
+      // Grid lines
+      for (let i = 0; i <= 4; i++) {
+        const y = padding.top + (chartHeight / 4) * i;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class', 'grid-line');
+        line.setAttribute('x1', padding.left);
+        line.setAttribute('y1', y);
+        line.setAttribute('x2', padding.left + chartWidth);
+        line.setAttribute('y2', y);
+        svg.appendChild(line);
+
+        const value = Math.round(maxValue - (maxValue / 4) * i);
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('class', 'axis-label');
+        label.setAttribute('x', padding.left - 10);
+        label.setAttribute('y', y + 4);
+        label.setAttribute('text-anchor', 'end');
+        label.textContent = '$' + (value / 1000).toFixed(0) + 'k';
+        svg.appendChild(label);
+      }
+
+      // Bars - rounded at the data-ends, anchored to baseline!
+      data.forEach((item, i) => {
+        const x = padding.left + (i * (barWidth + 2));
+        const barHeight = item.value * yScale;
+        const y = padding.top + chartHeight - barHeight;
+
+        const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        bar.setAttribute('class', 'bar');
+        bar.setAttribute('x', x);
+        bar.setAttribute('y', y);
+        bar.setAttribute('width', barWidth);
+        bar.setAttribute('height', barHeight);
+        bar.setAttribute('fill', 'var(--series-1)');
+        bar.setAttribute('rx', 4); // Rounded corners - 4px as specified!
+        bar.setAttribute('ry', 4);
+
+        const tooltip = createTooltip();
+        bar.addEventListener('mouseenter', (e) => {
+          showTooltip(tooltip, e.pageX, e.pageY, `
+            <div class="tooltip-title">${item.label}</div>
+            <div class="tooltip-row">
+              <div class="tooltip-marker" style="background: var(--series-1)"></div>
+              <span>Revenue: <span class="tooltip-value">$${item.value.toLocaleString()}</span></span>
+            </div>
+          `);
+        });
+        bar.addEventListener('mouseleave', () => hideTooltip(tooltip));
+
+        svg.appendChild(bar);
+
+        // X-axis labels
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('class', 'axis-label');
+        label.setAttribute('x', x + barWidth / 2);
+        label.setAttribute('y', padding.top + chartHeight + 20);
+        label.setAttribute('text-anchor', 'middle');
+        label.textContent = item.label;
+        svg.appendChild(label);
+      });
+
+      container.appendChild(svg);
+    }
+
+    // Initialize all the charts when the page loads
+    drawLineChart('lineChart', lineData, ['var(--series-1)', 'var(--series-2)']);
+    drawBarChart('barChart', barData);
+    drawLineChart('multiLineChart', multiLineData, ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)']);
+  </script>
+</body>
+</html>
